@@ -38,15 +38,28 @@ class DAO {
             Password: Password,
             Email: 'Email@Email.com'
         };
-        this.db.find(entry, function(err, doc) {
-            if (err) {
-                console.log("Invalid entry");
-            }
-            else{
-                console.log(doc);
-                return doc;
-            }
-        });
+
+        return new Promise((resolve, reject) => {
+            this.db.count(entry, function (err, num) {
+                if (err) {
+                    reject(err);
+                    console.log('rejected');
+                } else {
+                    resolve(num);
+                    console.log('resolved');
+                }
+            });
+        })
+
+      //  this.db.count(entry, function(err, doc) {
+      //      if (err) {
+       //         console.log("Invalid entry");
+        //    }
+        ///    else{
+          //      console.log(doc);
+           //     return doc;
+          //  }
+        //});
     }
 
     init(){

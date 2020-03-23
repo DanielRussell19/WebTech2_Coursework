@@ -41,16 +41,21 @@ app.post("/Login", function(req,res){
         return;
     }
 
-    console.log(dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword));
-
-    if(dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword) >1){
-        console.log(req.body);
-        res.redirect("Homepage");
-    }
-    else{
-        res.status(400).send("Entrie not found");
-        return;
-    }
+    dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword)
+    .then((num) => {
+        console.log(num);
+        if(num >0){
+            res.render("Homepage", { username: req.body.TxtUsername });
+        }
+        else{
+            res.status(400).send("No entry found.");
+            return;
+        }
+    })
+    .catch((err) => {
+        console.log('Error: ')
+        console.log(JSON.stringify(err))
+    });  
 });
 
 //Register view
