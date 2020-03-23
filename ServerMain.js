@@ -3,6 +3,8 @@ var http = require("http");
 var express = require("express");
 var mustache = require("mustache-express");
 
+var bodyParser = require("body-parser");
+
 var DAO = require('./Model/Nedb');
 var dbFile = 'database.nedb.db';
 
@@ -16,6 +18,9 @@ app = express();
 app.engine('mustache',mustache());
 app.set('view engine', 'mustache');
 app.set('Views',path.resolve(__dirname,'mustache'));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.set('port', process.env.PORT || 2000);
 
@@ -31,13 +36,13 @@ app.get("/Login", function(req,res){
 
 //Login View
 app.post("/Login", function(req,res){
-    //if (!req.body.Username || !req.body.Password) {
-        //res.status(400).send("Entries must have a title and content.");
-        //return;
-   //}
+    if (!req.body.TxtUsername || !req.body.TxtPassword) {
+        res.status(400).send("Entries must have a title and content.");
+        return;
+    }
 
-   console.log(req);
-   res.redirect("/");
+   console.log(req.body);
+   res.redirect("Homepage");
 });
 
 //Register view
