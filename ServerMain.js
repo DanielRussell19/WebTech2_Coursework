@@ -29,6 +29,17 @@ app.get("/Login", function(req,res){
     res.render("Login");
 });
 
+//Login View
+app.post("/Login", function(req,res){
+    //if (!req.body.Username || !req.body.Password) {
+        //res.status(400).send("Entries must have a title and content.");
+        //return;
+   //}
+
+   console.log(req);
+   res.redirect("/");
+});
+
 //Register view
 app.get("/Register", function(req,res){
     res.render("Register");

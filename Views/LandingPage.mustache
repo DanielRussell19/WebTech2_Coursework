@@ -14,11 +14,21 @@
             <h1 style="text-align: center; margin: 10px;">Welcome.</h1>
             <small>Would you like you Login or Register?</small><br>
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-secondary">Login</button>
-                <button type="button" class="btn btn-secondary">Register</button>
+                <button type="button" class="btn btn-secondary" onclick="sendLogin">Login</button>
+                <button type="button" class="btn btn-secondary" onclick="sendRegister">Register</button>
             </div>
             </div>
         </div>
     </div>
 </body>
 </html>
+
+<script>
+    function sendLogin(){
+        Response.redirect("Login");
+    }
+
+    function sendRegister(){
+        Response.redirect("Register");
+    }
+</script>

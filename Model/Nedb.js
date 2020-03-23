@@ -17,15 +17,45 @@ class DAO {
         }
     }
 
+    createUser(title, content, published) {
+        var entry = {
+            type: guestbookEntryField,
+            title: title,
+            content: content,
+            published: published
+        };
+        this.db.insert(entry, function(err, doc) {
+            if (err) {
+                console.log("Can't insert entry title: ", title);
+            }
+        });
+    }
+
+    ValidateUser(Username, Password) {
+        var entry = {
+            type: guestbookEntryField,
+            Username: Username,
+            Password: Password
+        };
+        this.db.count(entry, function(err, doc) {
+            if (err) {
+                console.log("Invalid login | Error");
+            }
+            else{
+                return;
+            }
+        });
+    }
+
     init(){
-            this.db.insert({
-            guestbookEntryField: 'guestbookEntryField', 
-            title: 'like',
-            content: 'nice', 
-            published: '17/02/2020'
-            });
-        console.log('new entry inserted');
-        }
+        this.db.insert({
+        guestbookEntryField: 'UserAccount', 
+        Username: 'Me',
+        Password: 'Password', 
+        Email: 'Email@Email.com'
+        });
+    console.log('new entry inserted');
+}
 
 }
 
