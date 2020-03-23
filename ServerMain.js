@@ -41,8 +41,14 @@ app.post("/Login", function(req,res){
         return;
     }
 
-   console.log(req.body);
-   res.redirect("Homepage");
+    if(dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword) >1){
+        console.log(req.body);
+        res.redirect("Homepage");
+    }
+    else{
+        res.status(400).send("Entrie not found");
+        return;
+    }
 });
 
 //Register view

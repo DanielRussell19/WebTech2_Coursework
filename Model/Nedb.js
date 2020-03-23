@@ -33,7 +33,7 @@ class DAO {
 
     ValidateUser(Username, Password) {
         var entry = {
-            type: guestbookEntryField,
+            type: 'UserAccount',
             Username: Username,
             Password: Password
         };
@@ -49,7 +49,7 @@ class DAO {
 
     init(){
         this.db.insert({
-        guestbookEntryField: 'UserAccount', 
+        type: 'UserAccount', 
         Username: 'Me',
         Password: 'Password', 
         Email: 'Email@Email.com'
