@@ -37,7 +37,7 @@ app.get("/Login", function(req,res){
 //Login View
 app.post("/Login", function(req,res){
     if (!req.body.TxtUsername || !req.body.TxtPassword) {
-        res.status(400).send("Entries must have a title and content.");
+        res.status(400).send("Entries must have a Username and Password.");
         return;
     }
 
