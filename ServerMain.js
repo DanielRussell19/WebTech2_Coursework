@@ -5,7 +5,7 @@ var mustache = require("mustache-express");
 
 var bodyParser = require("body-parser");
 
-var DAO = require('./Model/Nedb');
+var DAO = require('./Models/Nedb');
 var dbFile = 'database.nedb.db';
 
 let dao = new DAO(dbFile);
