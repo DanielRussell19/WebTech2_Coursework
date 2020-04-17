@@ -2,14 +2,15 @@
 var http = require("http");
 var express = require("express");
 var mustache = require("mustache-express");
-
+path = require("path")
 var bodyParser = require("body-parser");
+projectController = require('./Controller/projectRoutes.js');
 
-var DAO = require('./Model/Nedb');
+/*var DAO = require('./Model/Nedb');
 var dbFile = 'database.nedb.db';
 
 let dao = new DAO(dbFile);
-dao.init();
+dao.init();*/
 
 var path = require("path");
 
@@ -18,6 +19,14 @@ app = express();
 app.engine('mustache',mustache());
 app.set('view engine', 'mustache');
 app.set('Views',path.resolve(__dirname,'mustache'));
+
+//use the ../static folder to serve static resources, e.g. images
+var staticPath = path.resolve(__dirname, "../static");
+app.use(express.static(staticPath));
+
+//use controllers (defined above) for handling requests
+app.use('/', projectController);
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -29,10 +38,21 @@ app.get("/", function(req,res){
     res.render("LandingPage");
 });
 
+
 //Login View
 app.get("/Login", function(req,res){
     res.render("Login");
 });
+
+/*app.post('/Login',function(req,res){
+    var user_name=req.body.user;
+    var password=req.body.password;
+    console.log("User name = "+user_name+", password is "+password);
+    res.end("yes");
+  });*/
+
+
+
 
 //Login View
 app.post("/Login", function(req,res){
@@ -83,7 +103,7 @@ app.get("/Logout", function(req,res){
     res.render("Logout");
 });
 
-//for testing the mustache rendereror 
+//for testing the mustache renderer 
 app.get("/Page", function(req,res){
     res.render("page", { 'title': 'Hot topic of the day', 'subject': 'Corona'});
 });

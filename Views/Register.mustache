@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{{>header}}
+</head>
+<body class="container">
+{{title}}
+<h2>New User Registration</h2>
+ 
+<form method="post" role="/register">
+  <div class="form-group">
+{{user-name-error}}
+    <label for="username">User Name</label>
+    <input type="text" class="form-control" id="username"
+           name="username" placeholder="Enter user name" required>
+  </div>
+  <div class="form-group">
+    <label for="password">Password (8 characters minimum)</label>
+    <input type="password" class="form-control" id="pass"
+name="pass" placeholder="Enter password" minlength="8" required>
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Register" class="btn btn-primary">
+  </div>
+</form>
+</body>
+</html>
+
+
+
+<!-- <html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -28,4 +57,4 @@
         </div>
     </div>
 </body>
-</html>
+</html> -->

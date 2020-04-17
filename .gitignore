@@ -1,3 +1,4 @@
-WebApp/package.json
-WebApp/package-lock.json
-WebApp/node_modules/
+package.json
+package-lock.json
+README
+node_modules/

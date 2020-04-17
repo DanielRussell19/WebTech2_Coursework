@@ -15,20 +15,14 @@
             <small>Would you like you Login or Register?</small><br>
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button><a href="./Login">Login</a></button>
-                <button><a href="./Register">Register</a></button>
+                {{^user}}
+                    <button><a href="./Register">Register</a></button>
+                {{/user}}
+
+                
             </div>
             </div>
         </div>
     </div>
 </body>
 </html>
-
-<script>
-    function sendLogin(){
-        Response.redirect("Login");
-    }
-
-    function sendRegister(){
-        Response.redirect("Register");
-    }
-</script>
