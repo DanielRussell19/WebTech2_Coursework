@@ -37,7 +37,7 @@ class DAO {
         });
     }
 
-    create(projectTitle, modulename, description, isPrivate, shareLink, dueDate, completionDate) {
+    create(projectTitle, modulename, description, isPrivate, dueDate, completionDate) {
         var entry = {
             projectTitle: projectTitle,
             modulename: modulename,

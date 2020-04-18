@@ -3,9 +3,7 @@ const controller = express.Router();
 let projectDAO = require('../Model/project.js');
 
 let dao = new projectDAO();
-
 dao.init();
-
 
 controller.get("/Homepage", function (request, response) {
     dao.getAllEntries()
@@ -27,12 +25,14 @@ controller.get('/AddProject', function (request, response) {
 
 controller.post('/AddProject', function (request, response) {
     if (!request.body.projectTitle || !request.body.modulename || !request.body.description ||
-        !request.body.isPrivate || !request.body.shareLink || !request.body.dueDate || !request.body.completionDate) {
+        // !request.body.shareLink ||
+            !request.body.dueDate || !request.body.completionDate) {
         response.status(400).send("Please fill in the empty fields.");
         return;
     }
-    entries.create(request.body.projectTitle, request.body.modulename, request.body.description,
-        request.body.isPrivate, request.body.dueDate, request.body.completionDate, Date.now());
+
+    dao.create(request.body.projectTitle, request.body.modulename, request.body.description,
+        request.body.isPrivate !== undefined, request.body.dueDate, request.body.completionDate);
     response.redirect("/HomePage");
 })
 
