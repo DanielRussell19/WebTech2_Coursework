@@ -6,10 +6,10 @@ var mustache = require("mustache-express");
 var bodyParser = require("body-parser");
 
 var DAO = require('./Models/Nedb');
+var user = require('./Models/User');
 var dbFile = 'database.nedb.db';
 
 let dao = new DAO(dbFile);
-dao.init();
 
 var path = require("path");
 
@@ -17,7 +17,7 @@ var path = require("path");
 app = express();
 app.engine('mustache',mustache());
 app.set('view engine', 'mustache');
-app.set('Views',path.resolve(__dirname,'mustache'));
+app.set('views',path.resolve(__dirname,'mustache'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,6 +27,8 @@ app.set('port', process.env.PORT || 2000);
 //home landing page
 app.get("/", function(req,res){
     res.render("LandingPage");
+    user = new user("giqwudgqwiudui","Test","Banana","Thingy@Thingy.co.uk")
+    console.log(user);
 });
 
 //Login View
@@ -36,26 +38,15 @@ app.get("/Login", function(req,res){
 
 //Login View
 app.post("/Login", function(req,res){
-    if (!req.body.TxtUsername || !req.body.TxtPassword) {
-        res.status(400).send("Entries must have a Username and Password.");
+    //Serverside validation
+    if (!req.body.TxtUsername) {
+        res.status(400).send("Entries must have a Username.");
         return;
     }
-
-    dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword)
-    .then((num) => {
-        console.log(num);
-        if(num >0){
-            res.render("Homepage", { username: req.body.TxtUsername });
-        }
-        else{
-            res.status(400).send("No entry found.");
-            return;
-        }
-    })
-    .catch((err) => {
-        console.log('Error: ')
-        console.log(JSON.stringify(err))
-    });  
+    else if(!req.body.TxtPassword){
+        res.status(400).send("Entries must have a Password.");
+        return;
+    }
 });
 
 //Register view

@@ -6,6 +6,7 @@ var nedb = new Datastore({
   });
 
 class DAO {
+
     constructor(dbFilePath) {
         //run database as a file
         if (dbFilePath) {
@@ -16,61 +17,6 @@ class DAO {
             this.db = new Datastore();
         }
     }
-
-    //createUser(title, content, published) {
-      //  var entry = {
-        //    type: guestbookEntryField,
-          //  title: title,
-            //content: content,
-            //published: published
-        //};
-        //this.db.insert(entry, function(err, doc) {
-          //  if (err) {
-            //    console.log("Can't insert entry title: ", title);
-            //}
-        //});
-    //}
-
-    ValidateUser(Username, Password) {
-        var entry = {
-            type: 'UserAccount',
-            Username: Username,
-            Password: Password,
-            Email: 'Email@Email.com'
-        };
-
-        return new Promise((resolve, reject) => {
-            this.db.count(entry, function (err, num) {
-                if (err) {
-                    reject(err);
-                    console.log('rejected');
-                } else {
-                    resolve(num);
-                    console.log('resolved');
-                }
-            });
-        })
-
-      //  this.db.count(entry, function(err, doc) {
-      //      if (err) {
-       //         console.log("Invalid entry");
-        //    }
-        ///    else{
-          //      console.log(doc);
-           //     return doc;
-          //  }
-        //});
-    }
-
-    init(){
-        this.db.insert({
-        type: 'UserAccount', 
-        Username: 'Me',
-        Password: 'Password', 
-        Email: 'Email@Email.com'
-        });
-    console.log('new entry inserted');
-}
 
 }
 

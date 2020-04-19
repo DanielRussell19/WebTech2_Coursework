@@ -1,15 +1,11 @@
-//defines a user object
+//defines a User object
 class User{
-    //variables
-    username = null;
-    password = null;
-    email = null;
-
     //contructors
-    constructor(username,password,email){
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    constructor(UserID,Username,Password,Email){
+        this.UserID = UserID;
+        this.Username = Username;
+        this.Password = Password;
+        this.Email = Email;
     }
 }
 
