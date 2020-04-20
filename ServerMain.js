@@ -5,8 +5,9 @@ let mustache = require("mustache-express");
 let path = require("path")
 let bodyParser = require("body-parser");
 
-// Project imports
+// Controller imports
 let projectController = require('./Controller/projectRoutes.js');
+let userController = require('./Controller/userRoutes.js');
 
 /*var DAO = require('./Model/Nedb');
 var dbFile = 'database.nedb.db';
@@ -113,5 +114,5 @@ app.use(function(request,response){
 
 // Port listener
 app.listen(app.get('port'), function(){
-    console.log("CTRL-c to close server. DONT CLOSE TERMINAL I SWEAR DON'T DO!!");
+    console.log("CTRL-c to close server.");
 });

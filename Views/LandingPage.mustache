@@ -14,12 +14,16 @@
             <h1 style="text-align: center; margin: 10px;">Welcome.</h1>
             <small>Would you like you Login or Register?</small><br>
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button><a href="./Login">Login</a></button>
+              <span>
+                <a id="login" href="/Login" class="btn btn-primary">
+                    Sign in
+                </a>
+              </span>
                 {{^user}}
-                    <button><a href="./Register">Register</a></button>
+                    <button><a href="/Register">Register</a></button>
                 {{/user}}
 
-                
+
             </div>
             </div>
         </div>

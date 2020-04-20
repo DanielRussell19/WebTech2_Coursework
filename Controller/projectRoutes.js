@@ -1,11 +1,11 @@
 const express = require('express');
-const controller = express.Router();
+const projectController = express.Router();
 let projectDAO = require('../Model/project.js');
 
 let dao = new projectDAO();
 dao.init();
 
-controller.get("/Homepage", function (request, response) {
+projectController.get("/Homepage", function (request, response) {
     dao.getAllEntries()
         .then((list) => {
             console.log(list);
@@ -19,11 +19,11 @@ controller.get("/Homepage", function (request, response) {
         });
 });
 
-controller.get('/AddProject', function (request, response) {
+projectController.get('/AddProject', function (request, response) {
     response.render("AddProject");
 })
 
-controller.post('/AddProject', function (request, response) {
+projectController.post('/AddProject', function (request, response) {
     if (!request.body.projectTitle || !request.body.modulename || !request.body.description ||
         // !request.body.shareLink ||
             !request.body.dueDate || !request.body.completionDate) {
@@ -38,4 +38,4 @@ controller.post('/AddProject', function (request, response) {
 
 
 
-module.exports = controller;
+module.exports = projectController;
