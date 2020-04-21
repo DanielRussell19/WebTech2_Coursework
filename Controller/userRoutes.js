@@ -1,13 +1,15 @@
 const express = require('express');
 const userController = express.Router();
-let userDAO = require('../Model/user.js');
+const userDao = require("../Model/user.js");
+const auth = require("../auth/auth.js");
 
-let dao = new userDAO();
-dao.init();
 
 //test code for displaying users in the DB, remove before final release.
 userController.get("/Homepage", function (request, response) {
-    dao.getAllEntries()
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    userDao().getAllEntries()
         .then((list) => {
             console.log(list);
             response.render("HomePage", {
@@ -20,8 +22,12 @@ userController.get("/Homepage", function (request, response) {
         });
 });
 
-userController.get("/Login", function(request, response) {
+userController.get("/Login", function (request, response) {
     response.render("Login");
+});
+
+userController.post("/Login", auth.authorize("/Login"), function (request, response) {
+    response.redirect("/HomePage");
 });
 
 
@@ -29,24 +35,34 @@ userController.get('/Register', function (request, response) {
     response.render("Register");
 })
 
-userController.post("/Register", function(request, response) {
+userController.post("/Register", function (request, response) {
     const user = request.body.username;
     const password = request.body.pass;
-    console.log("register user", user, "password ",  password);
+
+    console.log("register user", user, "password ", password);
     if (!user || !password) {
         response.send(401, 'no user or no password');
         return;
     }
-    userDao.lookup(user, function(err, u) {
+
+    userDao().lookup(user, function (err, u) {
         if (u) {
             response.send(401, "User exists:", user);
             return;
         }
-        useDao.create(user, password);
+
+        userDao().create(user, password);
         response.redirect('/Login');
-    });  
+    });
 })
 
+userController.get("logout", function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+    
+    request.logout();
+    response.redirect("/");
+});
 
 
 module.exports = userController;

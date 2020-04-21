@@ -13,7 +13,7 @@
             <img src="https://via.placeholder.com/800x100?text=Project+Planner+Logo" style="margin-top: 10px;">
             <h1 style="text-align: center; margin: 10px;">Welcome.</h1>
             <small>Would you like you Login or Register?</small><br>
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <!--<div class="btn-group" role="group" aria-label="Basic example">
               <span>
                 <a id="login" href="/Login" class="btn btn-primary">
                     Sign in
@@ -24,7 +24,23 @@
                 {{/user}}
 
 
-            </div>
+            </div>-->
+            <div class="text-right" style="margin-bottom: 1em;">   
+            {{^user}}
+                 <a id="register" href="/Register" class="btn btn-primary">
+                   Register
+                 </a>
+                 <a id="login" href="/Login" class="btn btn-primary">
+                   Sign in
+                 </a>
+               {{/user}}
+               {{#user}}
+               <a id="logout" href="/logout" class="btn btn-primary">
+                 Sign out
+               </a>
+               {{/user}}
+             </div>
+
             </div>
         </div>
     </div>

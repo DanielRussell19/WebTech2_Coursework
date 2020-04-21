@@ -1,9 +1,11 @@
 // Library imports
 let http = require("http");
+let session = require('express-session');
 let express = require("express");
 let mustache = require("mustache-express");
 let path = require("path")
 let bodyParser = require("body-parser");
+let auth = require('./auth/auth');
 
 // Controller imports
 let projectController = require('./Controller/projectRoutes.js');
@@ -29,12 +31,19 @@ app.set('port', process.env.PORT || 2000);
 // Use the ../static folder to serve static resources, e.g. images
 var staticPath = path.resolve(__dirname, "../static");
 app.use(express.static(staticPath));
+ 
+app.use(session({ secret: 'dont tell anyone', resave: false, saveUninitialized: false }));
+
+// initialize authentication with passport
+auth.init(app); 
 
 // Use controllers (defined above) for handling requests
 app.use('/', projectController);
+app.use('/', userController);
 
 // Home landing page
 app.get("/", function(req,res){
+
     res.render("LandingPage");
 });
 

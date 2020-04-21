@@ -5,8 +5,7 @@ const saltRounds = 10;
 class UserDAO {
     constructor(dbFilePath) {
         if (dbFilePath) {
-            this.db = new Datastore({ filename: dbFilePath, 
-autoload: true });
+            this.db = new Datastore({ filename: dbFilePath, autoload: true });
         } else {
             this.db = new Datastore();
         }
