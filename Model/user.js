@@ -1,37 +1,40 @@
+//import the nedb module
 const Datastore = require("nedb");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+// the class can be instantiated with the db in embedded mode by providing a 
+// data file or in-memory mode without it
 class UserDAO {
     constructor(dbFilePath) {
         if (dbFilePath) {
+            //embedded
             this.db = new Datastore({ filename: dbFilePath, autoload: true });
         } else {
+            //in memory 
             this.db = new Datastore();
         }
     }
-     init() {
-        this.db.insert({
-            user: 'Peter',
-            password: 
-'$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C'
-        });
-        console.log('user record inserted in init');
-        
-        this.db.insert({
-            user: 'Ann',
-            password: 
-'$2b$10$bnEYkqZM.MhEF/LycycymOeVwkQONq8kuAUGx6G5tF9UtUcaYDs3S'            
-        });
-        console.log('user record inserted in init');
-        return this;
-    }
 
+
+    init() {
+        // this.db.insert({
+        //     username: 'test',
+        //     password: 'test',
+        //     email: 'test@test.com'
+        // });
+        //
+        // this.db.insert({
+        //     username: 'admin',
+        //     password: 'paper',
+        //     email: 'admin@admin.com'
+        // });
+    }
 
     create(username, password, email) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
-            console.log({username, password, hash, email});
+            console.log({ username, password, hash, email });
             var entry = {
                 username: username,
                 password: hash,
@@ -47,7 +50,7 @@ class UserDAO {
     }
 
     lookup(user, cb) {
-        this.db.find({'user': user}, function (err, entries) {
+        this.db.find({ 'username': user }, function (err, entries) {
             if (err) {
                 return cb(null, null);
             } else {
@@ -78,8 +81,41 @@ class UserDAO {
         });
     }
 
+    delete(user, cb) {
+        this.db.find({ 'username': user }, function (err, entries) {
+            if (err) {
+                return cb(null, null);
+            } else {
+                if (entries.length == 0) {
+                    return cb(null, null);
+                }
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
+    getAllEntries() {
+        return new Promise((resolve, reject) => {
+            this.db.find({}, function (err, entries) {
+                if (err) {
+                    reject(err);
+                    console.log('get all entries rejected');
+                } else {
+                    resolve(entries);
+                    console.log('get all entries resolved');
+                }
+            });
+        })
+    }
 }
 
-const dao = new UserDAO();
-dao.init();
-module.exports = dao;
+function setup() {
+    var path = require('path');
+    var appDir = path.dirname(require.main.filename) + "/app.users.db";
+
+    let dao = new UserDAO(appDir);
+    dao.init();
+    return dao;
+}
+
+module.exports = setup;

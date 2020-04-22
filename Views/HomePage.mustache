@@ -9,52 +9,58 @@
     <title>Homepage</title>
 </head>
 
-<body>
-    <div class="container-sm">
-        <div style="border: 2px solid #000000; margin-top: 10px; text-align: center;">
-            <img src="https://via.placeholder.com/800x100?text=Project+Planner+Logo" style="margin-top: 10px;">
-            <h3>Welcome, {{ username }}</h3>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-secondary">Add project</button>
-                <button type="button" class="btn btn-secondary">Home</button>
-                <button type="button" class="btn btn-secondary">Share project</button>
-                <button type="button" class="btn btn-secondary">Logout</button>
+<body class="container">
+    <h1>{{title}}</h1>
+    <a href="/Logout">Logout</a>
+
+<div class="text-right">
+        <a href="/UpdateUser" class="btn btn-primary">
+            Update User
+        </a>
+    </div>
+
+    <div class="text-right">
+        <a href="/AddProject" class="btn btn-primary">
+            Create a Project
+        </a>
+    </div>
+
+    {{#entries}}
+        <div class="panel panel-default" data-id="{{id}}">
+            <div class="panel-heading">
+                <div>
+                    {{projectTitle}}
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table">
-                    <caption>Projects</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Project Name</th>
-                            <th scope="col">Project Description</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Cookery</td>
-                            <td>Cook stuff</td>
-                            <td>Private</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>UniProject</td>
-                            <td>PAIN</td>
-                            <td>Public</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Personal Project</td>
-                            <td>SCIENCE!</td>
-                            <td>Private</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="panel-body">
+                {{modulename}}
+            </div>
+
+            <div class="panel-body">
+                {{description}}
+            </div>
+            <div class="panel-heading">
+                <div>
+                    {{isPrivate}}
+                </div>
+            </div>
+
+            <div class="panel-body">
+                {{shareLink}}
+            </div>
+
+            <div class="panel-body">
+                {{dueDate}}
+            </div>
+
+            <div class="panel-body">
+                {{completionDate}}
             </div>
         </div>
-    </div>
+        <br><br>
+    {{/entries}}
+
 </body>
 
 </html>
