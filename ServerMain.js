@@ -84,21 +84,6 @@ app.post("/Login", function(req,res){
     });  
 });
 
-// Register view
-app.get("/Register", function(req,res){
-    res.render("Register");
-});
-
-// Get Users view
-app.get("/Homepage", function(req,res){
-    res.render("Homepage");
-});
-
-// Update User view
-app.get("/UpdateUser", function(req,res){
-    res.render("UpdateUser");
-});
-
 // Remove User view
 app.get("/RemoveUser", function(req,res){
     res.render("RemoveUser");

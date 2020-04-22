@@ -38,10 +38,11 @@ userController.get('/Register', function (request, response) {
 userController.post("/Register", function (request, response) {
     const user = request.body.username;
     const password = request.body.pass;
+    const email = request.body.email;
 
-    console.log("register user", user, "password ", password);
-    if (!user || !password) {
-        response.send(401, 'no user or no password');
+    console.log("register user:", user, "password: ", password, "email:", email);
+    if (!user || !password || !email) {
+        response.send(401, 'no user or no password or no email');
         return;
     }
 
@@ -51,15 +52,54 @@ userController.post("/Register", function (request, response) {
             return;
         }
 
-        userDao().create(user, password);
+        userDao().create(user, password, email);
         response.redirect('/Login');
     });
 })
 
-userController.get("logout", function (request, response) {
+userController.get('/UpdateUser', function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
-    
+
+    response.render("UpdateUser");
+})
+
+userController.post("/UpdateUser", function (request, response) {
+
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    const userConfirm = request.body.userConfirm;
+    const passwordOld = request.body.passwordOld;
+    const passwordEdit = request.body.passwordEdit;
+    const emailConfirm = request.body.emailConfirm;
+
+    console.log("old password: ", passwordOld);
+    console.log("new password: ", passwordEdit);
+    if (!passwordOld) {
+        response.send(401, 'no old password entered');
+        return;
+    }
+    if (!passwordEdit) {
+        response.send(401, 'no new password entered');
+        return;
+    }
+
+    userDao().updateLookup(userConfirm, passwordOld, emailConfirm, function (err, u) {
+        if (u) {
+            response.send(401, "User exists:", user);
+            return;
+        }
+
+        userDao().update(userConfirm, emailConfirm, passwordOld, passwordEdit);
+        response.redirect('/Login');
+    });
+})
+
+userController.get("Logout", function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
     request.logout();
     response.redirect("/");
 });

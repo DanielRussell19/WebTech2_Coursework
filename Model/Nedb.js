@@ -27,21 +27,23 @@ class UserDAO {
         return this;
     }
 
-    create(username, password) { 
+
+    create(username, password, email) {
         const that = this;
-        bcrypt.hash(password, saltRounds).then(function(hash) {
+        bcrypt.hash(password, saltRounds).then(function (hash) {
+            console.log({username, password, hash, email});
             var entry = {
-                user: username,
+                username: username,
                 password: hash,
+                email: email
             };
-         console.log('user entry is: ', entry);
-            
-         that.db.insert(entry, function (err) {
+
+            that.db.insert(entry, function (err) {
                 if (err) {
                     console.log("Can't insert user: ", username);
                 }
             });
-        });  
+        });
     }
 
     lookup(user, cb) {
@@ -56,87 +58,28 @@ class UserDAO {
             }
         });
     }
+
+    updateLookup(user, password, email, cb) {
+        this.db.find({ $where: { 'username': user } && { 'password': password } && { 'email': email } }, function (err, entries) {
+            if (err) {
+                return cb(null, null);
+            } else {
+                if (entries.length == 0) {
+                    return cb(null, null);
+                }
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
+    update(userConfirm, emailConfirm, passwordOld, passwordEdit) {
+        this.db.update({ $where: { 'username': userConfirm } && { 'email': emailConfirm }}, {'password': passwordOld }, { 'password': passwordEdit }, function (err, numReplaced) {
+            return;
+        });
+    }
+
 }
 
 const dao = new UserDAO();
 dao.init();
 module.exports = dao;
-
-
-/*const Datastore = require('nedb');
-
-var nedb = new Datastore({
-    filename: 'db.db',
-    autoload: true
-  });
-
-class DAO {
-    constructor(dbFilePath) {
-        //run database as a file
-        if (dbFilePath) {
-            this.db = new Datastore({ filename: dbFilePath, autoload: true });
-            console.log("DB connected to file: ", dbFilePath);
-        } else {
-            //in memory 
-            this.db = new Datastore();
-        }
-    }
-
-    //createUser(title, content, published) {
-      //  var entry = {
-        //    type: guestbookEntryField,
-          //  title: title,
-            //content: content,
-            //published: published
-        //};
-        //this.db.insert(entry, function(err, doc) {
-          //  if (err) {
-            //    console.log("Can't insert entry title: ", title);
-            //}
-        //});
-    //}
-
-    ValidateUser(Username, Password) {
-        var entry = {
-            type: 'UserAccount',
-            Username: Username,
-            Password: Password,
-            Email: 'Email@Email.com'
-        };
-
-        return new Promise((resolve, reject) => {
-            this.db.count(entry, function (err, num) {
-                if (err) {
-                    reject(err);
-                    console.log('rejected');
-                } else {
-                    resolve(num);
-                    console.log('resolved');
-                }
-            });
-        })
-
-      //  this.db.count(entry, function(err, doc) {
-      //      if (err) {
-       //         console.log("Invalid entry");
-        //    }
-        ///    else{
-          //      console.log(doc);
-           //     return doc;
-          //  }
-        //});
-    }
-
-    init(){
-        this.db.insert({
-        type: 'AdminAccount', 
-        Username: 'Admin',
-        Password: 'Password', 
-        Email: 'Email@Email.com'
-        });
-    console.log('admin entry inserted');
-}
-
-}
-
-module.exports = DAO;*/

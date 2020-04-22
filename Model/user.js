@@ -31,13 +31,14 @@ class UserDAO {
         // });
     }
 
-    create(username, password) {
+    create(username, password, email) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
-            console.log({username, password, hash});
+            console.log({ username, password, hash, email });
             var entry = {
                 username: username,
                 password: hash,
+                email: email
             };
 
             that.db.insert(entry, function (err) {
@@ -49,6 +50,38 @@ class UserDAO {
     }
 
     lookup(user, cb) {
+        this.db.find({ 'username': user }, function (err, entries) {
+            if (err) {
+                return cb(null, null);
+            } else {
+                if (entries.length == 0) {
+                    return cb(null, null);
+                }
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
+    updateLookup(user, password, email, cb) {
+        this.db.find({ $where: { 'username': user } && { 'password': password } && { 'email': email } }, function (err, entries) {
+            if (err) {
+                return cb(null, null);
+            } else {
+                if (entries.length == 0) {
+                    return cb(null, null);
+                }
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
+    update(userConfirm, emailConfirm, passwordOld, passwordEdit) {
+        this.db.update({ $where: { 'username': userConfirm } && { 'email': emailConfirm }}, {'password': passwordOld }, { 'password': passwordEdit }, function (err, numReplaced) {
+            return;
+        });
+    }
+
+    delete(user, cb) {
         this.db.find({ 'username': user }, function (err, entries) {
             if (err) {
                 return cb(null, null);

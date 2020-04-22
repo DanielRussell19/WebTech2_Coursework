@@ -23,8 +23,8 @@ projectController.get("/Homepage", function (request, response) {
         });
 });
 
-projectController.get('/AddProject', ensureLoggedIn('/Login'), function (req, res) {
-    // Check if the user is logged in
+projectController.get('/AddProject', ensureLoggedIn('/Login'), function (request, response) {
+    // Check if the user is logged in (not working)
     if (request.user == null) { response.redirect('/'); return; }
 
     res.render("AddProject", {
@@ -33,8 +33,8 @@ projectController.get('/AddProject', ensureLoggedIn('/Login'), function (req, re
 })
 
 projectController.post('/AddProject', ensureLoggedIn('/Login'), function (request, response) {
-    // Check if the user is logged in
-    if (request.user == null) { response.redirect('/'); return; }
+     /*// Check if the user is logged in (not working)
+    if (request.user == null) { response.redirect('/'); return; }*/
     
     if (!request.body.projectTitle || !request.body.modulename || !request.body.description ||
             !request.body.dueDate || !request.body.completionDate) {
@@ -47,23 +47,6 @@ projectController.post('/AddProject', ensureLoggedIn('/Login'), function (reques
     response.redirect("/HomePage");
 });
 
-/*
-projectController.get('/AddProject', function (request, response) {
-    response.render("AddProject");
-}) */
-
-/*projectController.post('/AddProject', function (request, response) {
-    if (!request.body.projectTitle || !request.body.modulename || !request.body.description ||
-        // !request.body.shareLink ||
-            !request.body.dueDate || !request.body.completionDate) {
-        response.status(400).send("Please fill in the empty fields.");
-        return;
-    }
-
-    dao.create(request.body.projectTitle, request.body.modulename, request.body.description,
-        request.body.isPrivate !== undefined, request.body.dueDate, request.body.completionDate);
-    response.redirect("/HomePage");
-})*/
 
 
 
