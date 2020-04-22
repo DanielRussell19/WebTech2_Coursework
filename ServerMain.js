@@ -45,6 +45,8 @@ app.use('/', userController);
 app.get("/", function(req,res){
 
     res.render("LandingPage");
+    user = new user("giqwudgqwiudui","Test","Banana","Thingy@Thingy.co.uk")
+    console.log(user);
 });
 
 
@@ -62,26 +64,15 @@ app.get("/Login", function(req,res){
 
 // Login View
 app.post("/Login", function(req,res){
-    if (!req.body.TxtUsername || !req.body.TxtPassword) {
-        res.status(400).send("Entries must have a Username and Password.");
+    //Serverside validation
+    if (!req.body.TxtUsername) {
+        res.status(400).send("Entries must have a Username.");
         return;
     }
-
-    dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword)
-    .then((num) => {
-        console.log(num);
-        if(num >0){
-            res.render("Homepage", { username: req.body.TxtUsername });
-        }
-        else{
-            res.status(400).send("No entry found.");
-            return;
-        }
-    })
-    .catch((err) => {
-        console.log('Error: ')
-        console.log(JSON.stringify(err))
-    });  
+    else if(!req.body.TxtPassword){
+        res.status(400).send("Entries must have a Password.");
+        return;
+    }
 });
 
 // Remove User view
