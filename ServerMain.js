@@ -11,11 +11,6 @@ let auth = require('./auth/auth');
 let projectController = require('./Controller/projectRoutes.js');
 let userController = require('./Controller/userRoutes.js');
 
-/*var DAO = require('./Model/Nedb');
-var dbFile = 'database.nedb.db';
-
-let dao = new DAO(dbFile);
-dao.init();*/
 
 // Express definitions
 app = express();
