@@ -11,11 +11,6 @@ let auth = require('./auth/auth');
 let projectController = require('./Controller/projectRoutes.js');
 let userController = require('./Controller/userRoutes.js');
 
-/*var DAO = require('./Model/Nedb');
-var dbFile = 'database.nedb.db';
-
-let dao = new DAO(dbFile);
-dao.init();*/
 
 // Express definitions
 app = express();
@@ -43,13 +38,22 @@ app.use('/', userController);
 
 // Home landing page
 app.get("/", function(req,res){
-
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
     res.render("LandingPage");
 });
 
 
 // Login View
 app.get("/Login", function(req,res){
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
     res.render("Login");
 });
 
@@ -62,6 +66,12 @@ app.get("/Login", function(req,res){
 
 // Login View
 app.post("/Login", function(req,res){
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
+
     if (!req.body.TxtUsername || !req.body.TxtPassword) {
         res.status(400).send("Entries must have a Username and Password.");
         return;
@@ -85,25 +95,32 @@ app.post("/Login", function(req,res){
 });
 
 // Remove User view
-app.get("/RemoveUser", function(req,res){
+app.get("/RemoveUser", function(req,res) {
+    // Redirect if not logged in
+    if (req.user == null) { 
+        res.redirect('/'); 
+        return; 
+    }
+
     res.render("RemoveUser");
 });
 
 // Logout View
 app.get("/Logout", function(req,res){
-    res.render("Logout");
-});
+    // Redirect if not logged in
+    if (req.user == null) { 
+        res.redirect('/'); 
+        return; 
+    }
 
-// For testing the mustache renderer 
-app.get("/Page", function(req,res){
-    res.render("page", { 'title': 'Hot topic of the day', 'subject': 'Corona'});
+    res.render("Logout");
 });
 
 // Error view
 app.use(function(request,response){
     response.type('text/plain');
     response.status(404);
-    response.send("Error,404,Resource not found.");
+    response.send("Error, 404, Resource not found.");
 });
 
 // Port listener
