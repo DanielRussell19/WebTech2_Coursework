@@ -103,7 +103,7 @@ userController.post("/UpdateUser", function (request, response) {
         if (userObj) {
             bcrypt.compare(passwordOld, userObj.password, (error, same) => {
                 if (err != null)
-                    return response.send(500, "Im sorry there was an error when processign your request.");
+                    return response.send(500, "Im sorry there was an error when processing your request.");
 
                 // If we have the same password
                 if (same) {

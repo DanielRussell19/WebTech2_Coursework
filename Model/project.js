@@ -55,6 +55,67 @@ class ProjectDAO {
         });
     };
 
+    lookup(oldprojectTitle, cb) {
+        this.db.find({ 'projectTitle': oldprojectTitle }, function (err, entries) {
+            if (err) {
+                return cb(err, null);
+            } else {
+                if (entries.length == 0)
+                    return cb(null, null);
+
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
+    query(query, cb) {
+        this.db.find(query, cb);
+    }
+
+    updateProject(targetProject, newprojectTitle, newmodulename, newdescripiton, newdueDate, newcompletionDate, success = (noReplaced) => { }, error = (err) => { }) {
+        let instance = this;
+
+        instance.lookup(targetProject, (err, project) => {
+            if (err) {
+                if (error !== null)
+                    error(err);
+                return;
+            }
+
+            // Check if project is not found
+            if (project == null || project == undefined)
+                return error != null ? error({ message: "Project not found" }) : null;
+
+            // Update the fields        
+            instance.db.update({ 'projectTitle': targetProject },
+                {
+                    $set: { projectTitle: newprojectTitle },
+                    $set: { modulename: newmodulename },
+                    $set: { description: newdescripiton },
+                    //$set: { 'isPrivate': newisPrivate },
+                    $set: { dueDate: newdueDate },
+                    $set: { completionDate: newcompletionDate }
+                },
+                {}, (err, noReplaced) => {
+                    if (err) {
+                        if (error !== null)
+                            error(err);
+                        return;
+                    }
+
+                    success(noReplaced);
+                });
+        });
+        return;
+    }
+
+    deleteProject(targetProject) {
+        this.db.remove({ projectTitle: targetProject }, {}, function (err, numRemoved) {
+            /*callback(err, numRemoved);*/
+        });
+    }
+
+
 
     getAllEntries() {
         return new Promise((resolve, reject) => {
