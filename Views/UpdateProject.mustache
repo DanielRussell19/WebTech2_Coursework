@@ -6,46 +6,49 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Update Project</title>
 </head>
-<body>
-    <body class="container">
+<body class="container">
     {{title}}
+
     <h2>Project Update</h2>
 
-    <form id="updateProjectForm" method="POST" action="/UpdateProject">
-        <div class="form-group">
-            <label for="oldprojectTitle">Enter the title of the Project you wish to edit: </label>
-            <input type="text" class="form-control" id="oldprojectTitle" name="oldprojectTitle" placeholder="Enter title"
-                required value="">
-        </div>
+    <form id="updateProjectForm" method="POST" action="/UpdateProject/{{project._id}}">
         <div class="form-group">
             <label for="projectTitle">Please enter a new or current project Title: </label>
             <input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter new or current project Title" 
-                required value="">
+                required value="{{project.projectTitle}}">
         </div>
 
         <div class="form-group">
             <label for="modulename">Please enter a new or current project module: </label>
             <input type="text" class="form-control" id="modulename" name="modulename" placeholder="Enter module name"
-                required value="">
+                required value="{{project.modulename}}">
         </div>
+
         <div class="form-group">
             <label for="description">Please enter a new or current project description: </label>
             <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" 
-                required value="">
+                required value="{{project.description}}">
         </div>
-        <!--<div class="form-group">
+        
+        <div class="form-group">
             <label for="isPrivate">Is the project private or public? </label>
-            <input type="checkbox" class="form-control" id="isPrivate" name="isPrivate">
-        </div>-->
+            {{#project.isPrivate}}
+                <input type="checkbox" class="form-control" id="isPrivate" name="isPrivate" value="checked" checked>
+            {{/project.isPrivate}}
+            {{^project.isPrivate}}
+                <input type="checkbox" class="form-control" id="isPrivate" name="isPrivate">
+            {{/project.isPrivate}}
+        </div>
+
         <div class="form-group">
             <label for="dueDate">Please enter a new or current project due date: </label>
             <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Enter completion date" minlength="8"
-                required value="">
+                required value="{{project.dueDate}}">
         </div>
         <div class="form-group">
             <label for="completionDate">Please enter a new or current project completion date: </label>
             <input type="date" class="form-control" id="completionDate" name="completionDate" placeholder="Enter completion date" minlength="8"
-                required value="">
+                required value="{{project.completionDate}}">
         </div>
     </form>
 
@@ -56,6 +59,5 @@
             </span>
         {{/user}}
     </div>
-</body>
 </body>
 </html>

@@ -55,6 +55,19 @@ class ProjectDAO {
         });
     };
 
+    lookupId(id, cb) {
+        this.db.find({ '_id': id }, function (err, entries) {
+            if (err) {
+                return cb(err, null);
+            } else {
+                if (entries.length == 0)
+                    return cb(null, null);
+
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
     lookup(oldprojectTitle, cb) {
         this.db.find({ 'projectTitle': oldprojectTitle }, function (err, entries) {
             if (err) {
@@ -72,31 +85,30 @@ class ProjectDAO {
         this.db.find(query, cb);
     }
 
-    updateProject(targetProject, newprojectTitle, newmodulename, newdescripiton, newdueDate, newcompletionDate, success = (noReplaced) => { }, error = (err) => { }) {
+    updateProject(id, 
+            projectTitle, modulename, description, dueDate, completionDate, 
+            isPrivate,
+        success = (noReplaced) => { }, error = (err) => { }) 
+    {
         let instance = this;
-
-        instance.lookup(targetProject, (err, project) => {
-            if (err) {
-                if (error !== null)
-                    error(err);
-                return;
-            }
+        instance.lookupId(id, (err, project) => {
+            if (err) { if (error !== null) error(err); return; }
 
             // Check if project is not found
             if (project == null || project == undefined)
                 return error != null ? error({ message: "Project not found" }) : null;
 
             // Update the fields        
-            instance.db.update({ 'projectTitle': targetProject },
-                {
-                    $set: { projectTitle: newprojectTitle },
-                    $set: { modulename: newmodulename },
-                    $set: { description: newdescripiton },
-                    //$set: { 'isPrivate': newisPrivate },
-                    $set: { dueDate: newdueDate },
-                    $set: { completionDate: newcompletionDate }
-                },
-                {}, (err, noReplaced) => {
+            instance.db.update({'_id':id}, {
+                    $set: {
+                        projectTitle,
+                        modulename,
+                        description,
+                        isPrivate,
+                        dueDate,
+                        completionDate 
+                    }
+                }, {}, (err, noReplaced) => {
                     if (err) {
                         if (error !== null)
                             error(err);
@@ -109,14 +121,21 @@ class ProjectDAO {
         return;
     }
 
+    deleteProjectId(_id) {
+        this.db.remove({ _id }, {}, (err, no)=>{});
+    }
+
+    /**
+     * Delete the project
+     * @param {string} targetProject
+     * @deprecated Use deleteProjectId instead! 
+     */
     deleteProject(targetProject) {
         this.db.remove({ projectTitle: targetProject }, {}, function (err, numRemoved) {
             /*callback(err, numRemoved);*/
         });
     }
-
-
-
+    
     getAllEntries() {
         return new Promise((resolve, reject) => {
             this.db.find({}, function (err, entries) {

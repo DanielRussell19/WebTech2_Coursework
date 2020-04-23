@@ -9,21 +9,19 @@
 <body>
     <div class="container-sm">
         <div style="border: 2px solid #000000; margin-top: 10px;">
-            <form id="deleteProject" method="POST" action="/RemoveProject">
-        <div class="form-group">
-            <label for="deleteProject">Enter your User Name: </label>
-            <input type="text" class="form-control" id="deleteProject" name="deleteProject" placeholder="Enter project title to be removed."
-                required value="">
-        </div>
-    </form>
-
-    <div class="text-right" style="margin-bottom: 1em;">
-        {{^user}}
-            <span>
-                <button type="submit" form="deleteProject">Delete Project</button>
-            </span>
-        {{/user}}
-    </div>
+            <form id="deleteProject" method="POST" action="/RemoveProject/{{projectId}}">
+                <input name="temp" value="randomData" type="hidden">
+            </form>
+        
+            <div class="text-right" style="margin-bottom: 1em;">
+                <a href="/"> Go back without deleting </a>
+                
+                {{^user}}
+                    <span>
+                        <button type="submit" form="deleteProject"> Delete Project </button>
+                    </span>
+                {{/user}}
+            </div>
         </div>
     </div>
 </body>
