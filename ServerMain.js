@@ -9,6 +9,7 @@ let auth = require('./auth/auth');
 
 // Controller imports
 let projectController = require('./Controller/projectRoutes.js');
+let taskController = require('./Controller/taskRoutes.js');
 let userController = require('./Controller/userRoutes.js');
 
 /*var DAO = require('./Model/Nedb');
@@ -39,14 +40,12 @@ auth.init(app);
 
 // Use controllers (defined above) for handling requests
 app.use('/', projectController);
+app.use('/', taskController);
 app.use('/', userController);
 
 // Home landing page
 app.get("/", function(req,res){
-
     res.render("LandingPage");
-    user = new user("giqwudgqwiudui","Test","Banana","Thingy@Thingy.co.uk")
-    console.log(user);
 });
 
 

@@ -19,13 +19,13 @@ class TaskDAO {
         //seeder methods
     }
 
-    create(taskName, description, dueDate, completionDate, milestoneid) {
+    create(taskName, description, dueDate, completionDate) {
         var entry = {
             taskName: taskName,
             description: description,
             dueDate: dueDate,
-            completionDate: completionDate,
-            milestoneid: milestoneid
+            completionDate: completionDate
+            //milestoneId:
         }
         console.log("entry added")
         this.db.insert(entry, function (err, doc) {
@@ -39,6 +39,9 @@ class TaskDAO {
 
     //remove entry
 
+    //get specific task
+
+    //get all tasks
     getAllEntries() {
         return new Promise((resolve, reject) => {
             this.db.find({}, function (err, entries) {

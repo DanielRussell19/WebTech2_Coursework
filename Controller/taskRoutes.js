@@ -1,5 +1,5 @@
 const express = require('express');
-const projectController = express.Router();
+const taskController = express.Router();
 const taskDao = require('../Model/task.js');
 const userDao = require('../Model/user.js');
 const auth = require('../auth/auth.js');
@@ -8,30 +8,49 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 //View task seperate webpage??? / collected via other means likely
 
 //Add Task
-projectController.get('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
-
+taskController.get('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
+    response.render("AddTask");
 })
 
-projectController.post('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
+taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
+    if(request.body.TaskName == "" || request.body.TaskDesc == "" || request.body.TaskDue == "" || request.body.TaskComplete == ""){
+        response.status(400).send("Please fill in the empty fields.");
+        return;
+    }
 
+    if(request.body.TaskComplete < request.body.TaskDue){
+        response.status(400).send("Task can not be complete before due.");
+        return;
+    }
+
+    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, 2);
+    response.redirect("HomePage");
 });
 
 //Update Task
-projectController.get('/UpdateTask', ensureLoggedIn('/Login'), function (request, response) {
-
+taskController.get('/UpdateTask:id', ensureLoggedIn('/Login'), function (request, response) {
+    const taskId = request.params.id;
+    if (taskId == null){
+        return response.send(401, "Task ID is not set!");
+    }
+    response.render("UpdateTask", {taskId});
 })
 
-projectController.post('/UpdateTask', ensureLoggedIn('/Login'), function (request, response) {
-
+taskController.post('/UpdateTask:id', ensureLoggedIn('/Login'), function (request, response) {
+    response.render("UpdateTask");
 });
 
 //Remove Task
-projectController.get('/RemoveTask', ensureLoggedIn('/Login'), function (request, response) {
-
+taskController.get('/RemoveTask:id', ensureLoggedIn('/Login'), function (request, response) {
+    const taskId = request.params.id;
+    if (taskId == null){
+        return response.send(401, "Task ID is not set!");
+    }
+    response.render("RemoveTask", {taskId});
 })
 
-projectController.post('/RemoveTask', ensureLoggedIn('/Login'), function (request, response) {
-
+taskController.post('/RemoveTask:id', ensureLoggedIn('/Login'), function (request, response) {
+    response.render("RemoveTask");
 });
 
 module.exports = taskController;
