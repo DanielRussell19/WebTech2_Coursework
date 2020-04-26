@@ -55,7 +55,23 @@ class TaskDAO {
             });
         })
     }
+
+    deletetaskId(_id) {
+        this.db.remove({ _id }, {}, (err, no)=>{});
+    }
+    
+    /**
+     * Delete the task
+     * @param {string} targettask
+     * @deprecated Use deletetaskId instead! 
+     */
+    deletetask(targettask) {
+        this.db.remove({ taskName: targettask }, {}, function (err, numRemoved) {
+            /*callback(err, numRemoved);*/
+        });
+    }
 }
+
 
 function setup() {
     var path = require('path');

@@ -9,7 +9,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 
 //Add Task
 taskController.get('/AddTask/:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("AddTask", {milestoneid:request.params.id});
+    response.render("AddTask", {taskid:request.params.id});
 })
 
 taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
@@ -23,7 +23,7 @@ taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, res
         return;
     }
 
-    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, request.body.milestoneid);
+    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, request.body.taskid);
     response.redirect("HomePage");
 });
 
@@ -40,17 +40,27 @@ taskController.post('/UpdateTask:id', ensureLoggedIn('/Login'), function (reques
     response.render("UpdateTask");
 });
 
-//Remove Task
-taskController.get('/RemoveTask:id', ensureLoggedIn('/Login'), function (request, response) {
+//Remove task
+taskController.get('/Removetask/:id', function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    // Get the task id
     const taskId = request.params.id;
-    if (taskId == null){
-        return response.send(401, "Task ID is not set!");
-    }
-    response.render("RemoveTask", {taskId});
+    if (taskId == null) 
+        return response.send(401, "task ID is not set!");
+
+    response.render("Removetask", {taskId});
 })
 
-taskController.post('/RemoveTask:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("RemoveTask");
-});
+taskController.post('/Removetask/:id', function (request, response) {
+    // Get the task id
+    const taskId = request.params.id;
+    if (taskId == null) 
+        return response.send(401, "task ID is not set!");
+
+    taskDao().deletetaskId(taskId);
+    return response.redirect('/');
+})
 
 module.exports = taskController;
