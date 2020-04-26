@@ -8,8 +8,8 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 //View milestone seperate webpage??? / collected via other means likely
 
 //Add milestone
-milestoneController.get('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("AddMilestone", { 'projectid': request.body.projectid });
+milestoneController.get('/Addmilestone/:id', ensureLoggedIn('/Login'), function (request, response) {
+    response.render("AddMilestone", {projectid:request.params.id});
 })
 
 milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
