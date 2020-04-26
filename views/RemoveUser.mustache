@@ -4,26 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Account Delete</title>
+    <title>RemoveUser</title>
 </head>
-<body class="container">
-    {{title}}
-    <h2>Account Deletion</h2>
-
-    <form id="deleteUserForm" method="POST" action="/RemoveUser">
-        <div class="form-group">
-            <label for="userConfirmDelete">Enter your User Name: </label>
-            <input type="text" class="form-control" id="userConfirmDelete" name="userConfirmDelete" placeholder="Enter user name"
-                required value="">
+<body>
+    <div class="container-sm">
+        <div style="border: 2px solid #000000; margin-top: 10px;">
+            <form style="text-align: center; margin: 10px;" method="POST" action="/RemoveUser">
+                <img src="https://via.placeholder.com/400x200?text=Project+Planner+Logo" style="margin-top: 10px;">
+                <div class="form-group" style="text-align: left;">
+                <label for="TxtUsername">Username</label>
+                <input type="text" class="form-control" id="TxtUsername" value="LoadedName">
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label for="TxtEmail">Email address</label>
+                    <input type="email" class="form-control" id="TxtEmail" aria-describedby="emailHelp" value="LoadedEmail">
+                </div>
+                <small>Are you sure?</small><br>
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
         </div>
-    </form>
-
-    <div class="text-right" style="margin-bottom: 1em;">
-        {{^user}}
-            <span>
-                <button type="submit" form="deleteUserForm">Delete Account</button>
-            </span>
-        {{/user}}
     </div>
 </body>
 </html>

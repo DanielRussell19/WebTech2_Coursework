@@ -2,8 +2,8 @@ const express = require('express');
 const userController = express.Router();
 const userDao = require("../Model/user.js");
 const auth = require("../auth/auth.js");
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const { ensureLoggedIn } = require('connect-ensure-login');
+
 
 //test code for displaying users in the DB, remove before final release.
 userController.get("/Homepage", function (request, response) {
@@ -58,19 +58,6 @@ userController.post("/Register", function (request, response) {
     });
 })
 
-userController.get('/RemoveUser', function (request, response) {
-    // Check if the user is logged in
-    if (request.user == null) { response.redirect('/'); return; }
-
-    response.render("RemoveUser");
-})
-
-userController.post('/RemoveUser', function (request, response) {
-    userDao().deleteUser(request.body.userConfirmDelete);
-    response.redirect('/');
-})
-
-
 userController.get('/UpdateUser', function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
@@ -79,6 +66,7 @@ userController.get('/UpdateUser', function (request, response) {
 })
 
 userController.post("/UpdateUser", function (request, response) {
+
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
@@ -87,55 +75,43 @@ userController.post("/UpdateUser", function (request, response) {
     const passwordEdit = request.body.passwordEdit;
     const emailConfirm = request.body.emailConfirm;
 
-    console.log("Old password: ", passwordOld);
-    console.log("New password: ", passwordEdit);
+    console.log("old password: ", passwordOld);
+    console.log("new password: ", passwordEdit);
+    if (!passwordOld) {
+        response.send(401, 'no old password entered');
+        return;
+    }
+    if (!passwordEdit) {
+        response.send(401, 'no new password entered');
+        return;
+    }
 
-    if (!passwordOld)
-        return response.send(401, 'no old password entered.');
-
-    if (!passwordEdit)
-        return response.send(401, 'no new password entered.');
-
-    if (!userConfirm || userConfirm !== request.user.username)
-        return response.send(401, "Username is not entered or is invalid.");
-
-    userDao().lookup(request.user.username, (err, userObj) => {
-        if (userObj) {
-            bcrypt.compare(passwordOld, userObj.password, (error, same) => {
-                if (err != null)
-                    return response.send(500, "Im sorry there was an error when processing your request.");
-
-                // If we have the same password
-                if (same) {
-                    // Update the password
-                    userDao().updatePassword(request.user.username, true, passwordEdit,
-                        (noReplaced) => {
-                            return response.send(401, "Successfully changed password!");
-                        },
-                        (err) => {
-                            console.error("Error during database update! ", err);
-                            return response.send(500, "Error during database update!");
-                        });
-                } else {
-                    // Display error
-                    return response.send(401, "Incorrect password!");
-                }
-            });
-
+    userDao().updateLookup(userConfirm, passwordOld, emailConfirm, function (err, u) {
+        if (u) {
+            response.send(401, "User exists:", user);
             return;
-        } else {
-            return response.send(401, "User does not exist");
         }
+
+        userDao().update(userConfirm, emailConfirm, passwordOld, passwordEdit);
+        response.redirect('/Login');
     });
 })
 
-userController.get("Logout", function (request, response) {
+userController.get("/RemoveUser", ensureLoggedIn('/Login'), function(request, response){
+    response.render('RemoveUser');
+});
+
+userController.post("/RemoveUser", ensureLoggedIn('/Login'), function(request, response){
+    request.logout();
+    response.redirect('/');
+});
+
+userController.get("/Logout", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
     request.logout();
     response.redirect("/");
 });
-
 
 module.exports = userController;
