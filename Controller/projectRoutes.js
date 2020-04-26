@@ -39,9 +39,24 @@ projectController.get('/ViewProject/:id', function (request, response) {
     dao.lookupId(projectId, (err, project) => {
         if (project) {
             console.log(project);
-            tasks = 10;
-            milestones = 10;
-            response.render("ViewProject", {project});
+
+            milestoneDAO().getAllEntries().then((listmilestones) => {
+                console.log(listmilestones);
+
+                taskDAO().getAllEntries().then((listtasks) => {
+                    console.log(listtasks);
+           
+                    response.render("ViewProject", {project:project, listtasks:listtasks, listmilestones:listmilestones}, );
+                })
+                .catch((err) => {
+                    console.log('Error: ')
+                    console.log(JSON.stringify(err))
+                });
+            })
+            .catch((err) => {
+                console.log('Error: ')
+                console.log(JSON.stringify(err))
+            });
         } else {
             return response.send(401, "Project does not exist");
         }

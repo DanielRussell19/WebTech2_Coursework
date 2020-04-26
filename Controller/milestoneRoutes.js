@@ -13,17 +13,17 @@ milestoneController.get('/Addmilestone', ensureLoggedIn('/Login'), function (req
 })
 
 milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
-    if(request.body.milestoneName == "" || request.body.milestoneDesc == "" || request.body.milestoneDue == "" || request.body.milestoneComplete == ""){
+    if(request.body.milestoneName == "" || request.body.description == "" || request.body.dueDate == "" || request.body.completionDate == ""){
         response.status(400).send("Please fill in the empty fields.");
         return;
     }
 
-    if(request.body.milestoneComplete < request.body.milestoneDue){
+    if(request.body.completionDate < request.body.dueDate){
         response.status(400).send("milestone can not be complete before due.");
         return;
     }
 
-    milestoneDao().create(request.body.milestoneName, request.body.milestoneDesc, request.body.milestoneDue,request.body.milestoneComplete, 2);
+    milestoneDao().create(request.body.milestoneName, request.body.description, request.body.dueDate,request.body.completionDate, request.body.projectid);
     response.redirect("HomePage");
 });
 

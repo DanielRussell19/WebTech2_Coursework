@@ -15,7 +15,24 @@
     <div style="border: solid 1px #000000">
     
         <a href="/AddMilestone/{{_id}}"> Create Milestone </a> <br>
+
+        {{#listmilestones}}
+        <div class="panel-heading">
+            <div>
+                {{milestoneName}}
+            </div>
+        </div>
+        {{/listmilestones}}
+
         <a href="/AddTask/{{_id}}"> Create Task </a> <br>
+
+        {{#listtasks}}
+        <div class="panel-heading">
+            <div>
+                {{taskName}}
+            </div>
+        </div>
+        {{/listtasks}}
 
     </div>
 

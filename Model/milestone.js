@@ -19,13 +19,13 @@ class milestoneDAO {
         //seeder methods
     }
 
-    create(milestoneName, description, dueDate, completionDate) {
+    create(milestoneName, description, dueDate, completionDate, projectid) {
         var entry = {
             milestoneName: milestoneName,
             description: description,
             dueDate: dueDate,
-            completionDate: completionDate
-            //projectId:
+            completionDate: completionDate,
+            projectid: projectid
         }
         console.log("entry added")
         this.db.insert(entry, function (err, doc) {
