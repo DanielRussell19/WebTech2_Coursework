@@ -20,22 +20,33 @@
         <div class="panel-heading">
             <div style="border: solid 1px #000000">
                 Milestone <br>
+                id: {{_id}} <br>
                 Title: {{milestoneName}} <br>
                 Description: {{description}} <br>
                 dueDate: {{dueDate}} <br>
                 dueCompletion: {{dueCompletion}} <br>
                 projectid: {{projectid}} <br>
             </div>
-            <a href="/AddTask/{{_id}}"> Create Task </a><a href="/Updatemilestone/{{_id}}"> Update Milestone </a><a href="/Removemilestone/{{_id}}"> Remove Milestone </a> <br>
+            <a href="/AddTask/{{_id}}"> Create Task </a>|<a href="/Updatemilestone/{{_id}}"> Update Milestone </a>|<a href="/Removemilestone/{{_id}}"> Remove Milestone </a> <br>
         </div>
+        <br>
         {{/listmilestones}}
+
+        <br>
 
         {{#listtasks}}
         <div class="panel-heading">
-            <div>
-                {{taskName}}
+            <div style="border: solid 1px #000000">
+                Task <br>
+                id: {{_id}} <br>
+                Taskname: {{taskName}} <br>
+                Description: {{description}} <br>
+                dueDate: {{dueDate}} <br>
+                completionDate: {{completionDate}} <br>
+                milestoneid: {{milestoneid}} <br>
             </div>
         </div>
+        <br>
         {{/listtasks}}
 
     </div>
