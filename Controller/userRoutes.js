@@ -2,6 +2,7 @@ const express = require('express');
 const userController = express.Router();
 const userDao = require("../Model/user.js");
 const auth = require("../auth/auth.js");
+const { ensureLoggedIn } = require('connect-ensure-login');
 
 
 //test code for displaying users in the DB, remove before final release.
@@ -95,6 +96,15 @@ userController.post("/UpdateUser", function (request, response) {
         response.redirect('/Login');
     });
 })
+
+userController.get("/RemoveUser", ensureLoggedIn('/Login'), function(request, response){
+    response.render('RemoveUser');
+});
+
+userController.post("/RemoveUser", ensureLoggedIn('/Login'), function(request, response){
+    request.logout();
+    response.redirect('/');
+});
 
 userController.get("/Logout", function (request, response) {
     // Check if the user is logged in
