@@ -6,33 +6,34 @@
     {{title}}
     <h2>User Update</h2>
 
-    <form id="registerForm" method="POST" action="/UpdateUser">
+    <form id="updateUserForm" method="POST" action="/UpdateUser">
         <div class="form-group">
-            <label for="userConfirm">User Name</label>
+            <label for="userConfirm">Enter your current User Name: </label>
             <input type="text" class="form-control" id="userConfirm" name="userConfirm" placeholder="Enter user name"
-                required>
+                required value="">
         </div>
         <div class="form-group">
-            <label for="passwordOld">Old Password (8 characters minimum)</label>
-            <input type="password" class="form-control" id="passwordOld" name="passwordOld" placeholder="Enter old password" minlength="8"
-                required>
-        </div>
-        <div class="form-group">
-            <label for="passwordEdit">New Password (8 characters minimum)</label>
-            <input type="password" class="form-control" id="passwordEdit" name="passwordEdit" placeholder="Enter new password" minlength="8"
-                required>
-        </div>
-        <div class="form-group">
-            <label for="emailConfirm">Email (8 characters minimum)</label>
+            <label for="emailConfirm">Current Email (8 characters minimum): </label>
             <input type="email" class="form-control" id="emailConfirm" name="emailConfirm" placeholder="Enter email" 
-                required>
+                required value="">
+        </div>
+
+        <div class="form-group">
+            <label for="passwordOld">Old Password (8 characters minimum): </label>
+            <input type="password" class="form-control" id="passwordOld" name="passwordOld" placeholder="Enter old password" minlength="8"
+                required value="">
+        </div>
+        <div class="form-group">
+            <label for="passwordEdit">New Password (8 characters minimum)@ </label>
+            <input type="password" class="form-control" id="passwordEdit" name="passwordEdit" placeholder="Enter new password" minlength="8"
+                required value="">
         </div>
     </form>
+
     <div class="text-right" style="margin-bottom: 1em;">
         {{^user}}
             <span>
                 <button type="submit" form="updateUserForm">Update</button>
-                <a href="/RemoveUser">RemoveUser</a>
             </span>
         {{/user}}
     </div>

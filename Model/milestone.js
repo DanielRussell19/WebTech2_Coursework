@@ -1,69 +1,37 @@
-//import the nedb module
-const Datastore = require("nedb");
+//import datastore module
+const Datastore = require(nedb);
 
-//the class can be instantiated with the db in embedded mode by providing a 
-//data file or in-memory mode without it
-class milestoneDAO {
+//connecting to the database the same way as Project.js
+class ProjectDAO {
     constructor(dbFilePath) {
         if (dbFilePath) {
-            //embedded
             this.db = new Datastore({ filename: dbFilePath, autoload: true });
         } else {
-            //in memory 
             this.db = new Datastore();
         }
     }
 
 
-    init() {
-        //seeder methods
-    }
-
-    create(milestoneName, description, dueDate, completionDate) {
-        var entry = {
-            milestoneName: milestoneName,
-            description: description,
-            dueDate: dueDate,
-            completionDate: completionDate
-            //projectId:
-        }
-        console.log("entry added")
-        this.db.insert(entry, function (err, doc) {
-            if (err) {
-                console.log("Can't insert entry title: ", milestoneName);
-            }
-        });
-    };
-
-    //update entry
-
-    //remove entry
-
-    //get specific milestone
-
-    //get all milestones
-    getAllEntries() {
-        return new Promise((resolve, reject) => {
-            this.db.find({}, function (err, entries) {
-                if (err) {
-                    reject(err);
-                    console.log('get all entries rejected');
-                } else {
-                    resolve(entries);
-                    console.log('get all entries resolved');
-                }
-            });
-        })
-    }
+//Additional work needed for user input
+//Milestone class blueprint
+function Milestone(MilestonID, MilestoneName, MilestoneDescription, DateDue, DateCompleted, ProjectID){
+  this.MilestoneID = MilestonID;
+  this.MilestoneName = MilestoneName;
+  this.MilestonDescription = MilestoneDescription;
+  this.DateDue = DateDue;
+  this.DateCompleted = DateCompleted;
+  this.ProjectID = ProjectID;
 }
 
-function setup() {
-    var path = require('path');
-    var appDir = path.dirname(require.main.filename) + "/app.milestone.db";
+//create new Milestone object
+//need to work on finind a way of taking user input to fill parameters
+var milestone1 = new Milestone();
 
-    let dao = new milestoneDAO(appDir);
-    dao.init();
-    return dao;
-}
-
-module.exports = setup;
+//insertion of milestone object to database
+db.insert(Milestone, function(err, newMilestone)
+  if(err == true){
+    console.log("Insertion failed.");
+  }else{
+    console.log("New milestone added.");
+  }
+);

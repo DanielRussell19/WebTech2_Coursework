@@ -16,11 +16,6 @@ class UserDAO {
         }
     }
 
-
-    init() {
-        //seeder method
-    }
-
     create(username, password, email) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
@@ -42,46 +37,73 @@ class UserDAO {
     lookup(user, cb) {
         this.db.find({ 'username': user }, function (err, entries) {
             if (err) {
-                return cb(null, null);
+                return cb(err, null);
             } else {
-                if (entries.length == 0) {
+                if (entries.length == 0) 
                     return cb(null, null);
-                }
+                
                 return cb(null, entries[0]);
             }
         });
     }
 
-    updateLookup(user, password, email, cb) {
-        this.db.find({ $where: { 'username': user } && { 'password': password } && { 'email': email } }, function (err, entries) {
+    query(query, cb) {
+        this.db.find(query, cb);
+    }
+
+    updatePassword(targetUser, hashThePassword, newPassword, success = (noReplaced) => {}, error = (err) => {}) {
+        let instance = this;
+        
+        instance.lookup(targetUser, (err, user) => {
             if (err) {
-                return cb(null, null);
-            } else {
-                if (entries.length == 0) {
-                    return cb(null, null);
-                }
-                return cb(null, entries[0]);
+                if (error !== null)
+                    error(err);
+                return;
             }
+
+            // Check if user is not found
+            if (user == null || user == undefined) 
+                return error != null ? error({ message: "User not found" }) : null;
+            
+            // Update the password        
+            if (hashThePassword) {
+                bcrypt.hash(newPassword, saltRounds, (err, hash) => {
+                    if (err) {
+                        if (error !== null)
+                            error(err);
+                        return;
+                    }
+                    
+                    instance.db.update({'username': targetUser}, { $set: {password: hash} }, {}, (err, noReplaced) => {
+                        if (err) {
+                            if (error !== null)
+                                error(err);
+                            return;
+                        }
+                        
+                        success(noReplaced);
+                    });
+                });
+                return;
+            }
+    
+            instance.db.update({'username': userConfirm}, {$set: { password: hash }}, {}, (err, noReplaced) => {
+                if (err) {
+                    if (error !== null)
+                        error(err);
+                    return;
+                }
+                
+                success(noReplaced);
+            });
         });
     }
 
-    update(userConfirm, emailConfirm, passwordOld, passwordEdit) {
-        this.db.update({ $where: { 'username': userConfirm } && { 'email': emailConfirm }}, {'password': passwordOld }, { 'password': passwordEdit }, function (err, numReplaced) {
-            return;
-        });
-    }
-
-    delete(user, cb) {
-        this.db.find({ 'username': user }, function (err, entries) {
-            if (err) {
-                return cb(null, null);
-            } else {
-                if (entries.length == 0) {
-                    return cb(null, null);
-                }
-                return cb(null, entries[0]);
-            }
-        });
+    deleteUser(targetUser) {
+        this.db.remove({username: targetUser}, {}, function (err, numRemoved) {
+            /*callback(err, numRemoved);*/
+            
+        }); 
     }
 
     getAllEntries() {
@@ -104,7 +126,7 @@ function setup() {
     var appDir = path.dirname(require.main.filename) + "/app.users.db";
 
     let dao = new UserDAO(appDir);
-    dao.init();
+    /*dao.init();*/
     return dao;
 }
 
