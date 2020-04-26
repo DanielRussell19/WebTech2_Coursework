@@ -96,13 +96,12 @@ userController.post("/UpdateUser", function (request, response) {
     });
 })
 
-userController.get("Logout", function (request, response) {
+userController.get("/Logout", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
     request.logout();
     response.redirect("/");
 });
-
 
 module.exports = userController;

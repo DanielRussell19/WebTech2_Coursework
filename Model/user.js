@@ -18,17 +18,7 @@ class UserDAO {
 
 
     init() {
-        // this.db.insert({
-        //     username: 'test',
-        //     password: 'test',
-        //     email: 'test@test.com'
-        // });
-        //
-        // this.db.insert({
-        //     username: 'admin',
-        //     password: 'paper',
-        //     email: 'admin@admin.com'
-        // });
+        //seeder method
     }
 
     create(username, password, email) {

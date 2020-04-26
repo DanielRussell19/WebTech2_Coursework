@@ -44,35 +44,6 @@ app.get("/", function(req,res){
     res.render("LandingPage");
 });
 
-
-// Login View
-app.get("/Login", function(req,res){
-    res.render("Login");
-});
-
-// Login View
-app.post("/Login", function(req,res){
-    //Serverside validation
-    if (!req.body.TxtUsername) {
-        res.status(400).send("Entries must have a Username.");
-        return;
-    }
-    else if(!req.body.TxtPassword){
-        res.status(400).send("Entries must have a Password.");
-        return;
-    }
-});
-
-// Remove User view
-app.get("/RemoveUser", function(req,res){
-    res.render("RemoveUser");
-});
-
-// Logout View
-app.get("/Logout", function(req,res){
-    res.render("Logout");
-});
-
 // For testing the mustache renderer 
 app.get("/Page", function(req,res){
     res.render("page", { 'title': 'Hot topic of the day', 'subject': 'Corona'});

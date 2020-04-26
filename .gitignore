@@ -5,3 +5,4 @@ node_modules/
 app.project.db
 app.task.db
 app.users.db
+app.milestone.db
