@@ -11,12 +11,7 @@ let auth = require('./auth/auth');
 let projectController = require('./Controller/projectRoutes.js');
 let taskController = require('./Controller/taskRoutes.js');
 let userController = require('./Controller/userRoutes.js');
-
-/*var DAO = require('./Model/Nedb');
-var dbFile = 'database.nedb.db';
-
-let dao = new DAO(dbFile);
-dao.init();*/
+let milestoneController = require('./Controller/milestoneRoutes');
 
 // Express definitions
 app = express();
@@ -42,6 +37,7 @@ auth.init(app);
 app.use('/', projectController);
 app.use('/', taskController);
 app.use('/', userController);
+app.use('/', milestoneController);
 
 // Home landing page
 app.get("/", function(req,res){
@@ -53,13 +49,6 @@ app.get("/", function(req,res){
 app.get("/Login", function(req,res){
     res.render("Login");
 });
-
-/*app.post('/Login',function(req,res){
-    var user_name=req.body.user;
-    var password=req.body.password;
-    console.log("User name = "+user_name+", password is "+password);
-    res.end("yes");
-});*/
 
 // Login View
 app.post("/Login", function(req,res){

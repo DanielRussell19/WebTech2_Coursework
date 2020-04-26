@@ -9,7 +9,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 
 //Add milestone
 milestoneController.get('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("Addmilestone");
+    response.render("AddMilestone", { 'projectid': request.body.projectid });
 })
 
 milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
@@ -33,11 +33,11 @@ milestoneController.get('/Updatemilestone:id', ensureLoggedIn('/Login'), functio
     if (milestoneId == null){
         return response.send(401, "milestone ID is not set!");
     }
-    response.render("Updatemilestone", {milestoneId});
+    response.render("UpdateMilestone", {milestoneId});
 })
 
 milestoneController.post('/Updatemilestone:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("Updatemilestone");
+    response.render("Homepage");
 });
 
 //Remove milestone
@@ -46,11 +46,11 @@ milestoneController.get('/Removemilestone:id', ensureLoggedIn('/Login'), functio
     if (milestoneId == null){
         return response.send(401, "milestone ID is not set!");
     }
-    response.render("Removemilestone", {milestoneId});
+    response.render("RemoveMilestone", {milestoneId});
 })
 
 milestoneController.post('/Removemilestone:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("Removemilestone");
+    response.render("RemoveMilestone");
 });
 
 module.exports = milestoneController;
