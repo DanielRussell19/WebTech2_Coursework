@@ -1,6 +1,8 @@
 const express = require('express');
 const projectController = express.Router();
 const projectDao = require('../Model/project.js');
+const taskDAO = require('../Model/task.js');
+const milestoneDAO = require('../Model/milestone.js');
 const userDao = require('../Model/user.js');
 const auth = require('../auth/auth.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
@@ -21,6 +23,29 @@ projectController.get("/Homepage", function (request, response) {
             console.log('Error: ')
             console.log(JSON.stringify(err))
         });
+});
+
+//View project to interface house a milestone and task listing.
+projectController.get('/ViewProject/:id', function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    // Get the project id
+    const projectId = request.params.id;
+    if (projectId == null) 
+        return response.send(401, "Project ID is not set!");
+
+    const dao = projectDao();
+    dao.lookupId(projectId, (err, project) => {
+        if (project) {
+            console.log(project);
+            tasks = 10;
+            milestones = 10;
+            response.render("ViewProject", {project});
+        } else {
+            return response.send(401, "Project does not exist");
+        }
+    });
 });
 
 projectController.get('/AddProject', ensureLoggedIn('/Login'), function (request, response) {
