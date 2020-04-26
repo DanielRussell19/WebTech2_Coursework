@@ -9,9 +9,8 @@ let auth = require('./auth/auth');
 
 // Controller imports
 let projectController = require('./Controller/projectRoutes.js');
-let taskController = require('./Controller/taskRoutes.js');
 let userController = require('./Controller/userRoutes.js');
-let milestoneController = require('./Controller/milestoneRoutes');
+
 
 // Express definitions
 app = express();
@@ -35,25 +34,71 @@ auth.init(app);
 
 // Use controllers (defined above) for handling requests
 app.use('/', projectController);
-app.use('/', taskController);
 app.use('/', userController);
-app.use('/', milestoneController);
 
 // Home landing page
 app.get("/", function(req,res){
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
     res.render("LandingPage");
 });
 
-// For testing the mustache renderer 
-app.get("/Page", function(req,res){
-    res.render("page", { 'title': 'Hot topic of the day', 'subject': 'Corona'});
+
+// Login View
+app.get("/Login", function(req,res){
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
+    res.render("Login");
+});
+
+/*app.post('/Login',function(req,res){
+    var user_name=req.body.user;
+    var password=req.body.password;
+    console.log("User name = "+user_name+", password is "+password);
+    res.end("yes");
+});*/
+
+// Login View
+app.post("/Login", function(req,res){
+    // Redirect if logged in
+    if (req.user != null) { 
+        res.redirect('/HomePage'); 
+        return; 
+    }
+
+    if (!req.body.TxtUsername || !req.body.TxtPassword) {
+        res.status(400).send("Entries must have a Username and Password.");
+        return;
+    }
+
+    dao.ValidateUser(req.body.TxtUsername,req.body.TxtPassword)
+    .then((num) => {
+        console.log(num);
+        if(num >0){
+            res.render("Homepage", { username: req.body.TxtUsername });
+        }
+        else{
+            res.status(400).send("No entry found.");
+            return;
+        }
+    })
+    .catch((err) => {
+        console.log('Error: ')
+        console.log(JSON.stringify(err))
+    });  
 });
 
 // Error view
 app.use(function(request,response){
     response.type('text/plain');
     response.status(404);
-    response.send("Error,404,Resource not found.");
+    response.send("Error, 404, Resource not found.");
 });
 
 // Port listener
