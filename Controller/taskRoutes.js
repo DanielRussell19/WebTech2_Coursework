@@ -8,8 +8,8 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 //View task seperate webpage??? / collected via other means likely
 
 //Add Task
-taskController.get('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("AddTask");
+taskController.get('/AddTask/:id', ensureLoggedIn('/Login'), function (request, response) {
+    response.render("AddTask", {milestoneid:request.params.id});
 })
 
 taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
@@ -23,7 +23,7 @@ taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, res
         return;
     }
 
-    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, 2);
+    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, request.body.milestoneid);
     response.redirect("HomePage");
 });
 

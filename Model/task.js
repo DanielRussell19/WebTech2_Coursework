@@ -19,13 +19,13 @@ class TaskDAO {
         //seeder methods
     }
 
-    create(taskName, description, dueDate, completionDate) {
+    create(taskName, description, dueDate, completionDate, milestoneid) {
         var entry = {
             taskName: taskName,
             description: description,
             dueDate: dueDate,
-            completionDate: completionDate
-            //milestoneId:
+            completionDate: completionDate,
+            milestoneid: milestoneid
         }
         console.log("entry added")
         this.db.insert(entry, function (err, doc) {
