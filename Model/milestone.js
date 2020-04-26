@@ -55,6 +55,21 @@ class milestoneDAO {
             });
         })
     }
+
+    deletemilestoneId(_id) {
+        this.db.remove({ _id }, {}, (err, no)=>{});
+    }
+
+    /**
+     * Delete the milestone
+     * @param {string} targetMilestone
+     * @deprecated Use deletemilestoneId instead! 
+     */
+    deletemilestone(targetMilestone) {
+        this.db.remove({ milestoneName: targetMilestone }, {}, function (err, numRemoved) {
+            /*callback(err, numRemoved);*/
+        });
+    }
 }
 
 function setup() {
