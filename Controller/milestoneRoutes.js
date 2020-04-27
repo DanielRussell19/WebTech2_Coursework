@@ -9,7 +9,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 
 //Add milestone
 milestoneController.get('/Addmilestone/:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("AddMilestone", {milestoneid:request.params.id});
+    response.render("AddMilestone", {projectid:request.params.id});
 })
 
 milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (request, response) {
@@ -23,7 +23,7 @@ milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (re
         return;
     }
 
-    milestoneDao().create(request.body.milestoneName, request.body.description, request.body.dueDate,request.body.completionDate, request.body.milestoneid);
+    milestoneDao().create(request.body.milestoneName, request.body.description, request.body.dueDate,request.body.completionDate, request.body.projectid);
     response.redirect("HomePage");
 });
 

@@ -9,7 +9,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 
 //Add Task
 taskController.get('/AddTask/:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("AddTask", {taskid:request.params.id});
+    response.render("AddTask", {milestoneid:request.params.id});
 })
 
 taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, response) {
@@ -23,7 +23,7 @@ taskController.post('/AddTask', ensureLoggedIn('/Login'), function (request, res
         return;
     }
 
-    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, request.body.taskid);
+    taskDao().create(request.body.TaskName, request.body.TaskDesc, request.body.TaskDue,request.body.TaskComplete, request.body.milestoneid);
     response.redirect("HomePage");
 });
 
