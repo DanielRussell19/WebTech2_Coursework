@@ -9,19 +9,20 @@
 <body>
     <div class="container-sm">
         <div style="border: 2px solid #000000; margin-top: 10px;">
-            <form method="POST" action="/UpdateTask" style="text-align: center; margin: 10px;">
+            <form method="POST" action="/AddTask" style="text-align: center; margin: 10px;">
                 <img src="https://via.placeholder.com/400x200?text=Project+Planner+Logo" style="margin-top: 10px;">
                 <div class="form-group" style="text-align: left;">
-                    <label for="TxtTaskName">Task Name</label>
-                    <input type="text" class="form-control" id="TxtTaskName">
+                    <label for="TaskName">Task Name</label>
+                    <input type="text" class="form-control" id="TaskName" name="TaskName" value={{task.taskName}}>
                 </div>
                 <div class="form-group" style="text-align: left;">
-                <label for="TxtTaskDesc">Task Description</label>
-                <input type="text" class="form-control" id="TxtTaskDesc">
-                <label for="TxtTaskDue">Task Due</label>
-                <input type="date" class="form-control" id="TxtTaskDue">
-                <label for="TxtTaskComplete">Task Complete</label>
-                <input type="date" class="form-control" id="TxtTaskComplete">
+                <label for="TaskDesc">Task Description</label>
+                <input type="text" class="form-control" id="TaskDesc" name="TaskDesc" value={{task.description}}>
+                <label for="TaskDue">Task Due</label>
+                <input type="date" class="form-control" id="TaskDue" name="TaskDue" value={{task.dueDate}}>
+                <label for="TaskComplete">Task Complete</label>
+                <input type="date" class="form-control" id="TaskComplete" name="TaskComplete" value={{task.completionDate}}>
+                <input type="hidden" id="milestoneid" name="milestoneid" value="{{task.milestoneid}}"
                 </div>
                 <button type="submit" class="btn btn-primary">Update Task</button>
             </form>

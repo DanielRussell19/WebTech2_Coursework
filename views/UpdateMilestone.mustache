@@ -9,15 +9,20 @@
 <body>
     <div class="container-sm">
         <div style="border: 2px solid #000000; margin-top: 10px;">
-            <form style="text-align: center; margin: 10px;">
+            <form method="POST" action="/AddMilestone" style="text-align: center; margin: 10px;">
                 <img src="https://via.placeholder.com/400x200?text=Project+Planner+Logo" style="margin-top: 10px;">
                 <div class="form-group" style="text-align: left;">
-                    <label for="TxtMileName">Milestone Name</label>
-                    <input type="text" class="form-control" id="TxtTaskName">
+                    <label for="milestoneName">Milestone Name</label>
+                    <input type="text" class="form-control" id="milestoneName" name="milestoneName" value={{milestone.milestoneName}}>
                 </div>
                 <div class="form-group" style="text-align: left;">
-                <label for="TxtMileDesc">Milestone Description</label>
-                <input type="text" class="form-control" id="TxtMileDesc">
+                <label for="description">Milestone Description</label>
+                <input type="text" class="form-control" id="description" name="description" value={{milestone.description}}>
+                <label for="dueDate">Milestone Date Due</label>
+                <input type="date" class="form-control" id="dueDate" name="dueDate" value={{milestone.dueDate}}>
+                <label for="completionDate">Milestone Date complete</label>
+                <input type="date" class="form-control" id="completionDate" name="completionDate" value={{milestone.completionDate}}>
+                <input type="hidden" id="projectid" name="projectid" value={{milestone.projectid}}>
                 </div>
                 <button type="submit" class="btn btn-primary">Update Milestone</button>
             </form>

@@ -27,18 +27,60 @@ milestoneController.post('/Addmilestone', ensureLoggedIn('/Login'), function (re
     response.redirect("HomePage");
 });
 
-//Update milestone
-milestoneController.get('/Updatemilestone:id', ensureLoggedIn('/Login'), function (request, response) {
+milestoneController.get('/Updatemilestone/:id', function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    // Get the project id
     const milestoneId = request.params.id;
-    if (milestoneId == null){
+    if (milestoneId == null) 
         return response.send(401, "milestone ID is not set!");
-    }
-    response.render("UpdateMilestone", {milestoneId});
+
+    const dao = milestoneDao();
+    dao.lookupId(milestoneId, (err, milestone) => {
+        if (milestone) {
+            console.log(milestone);
+            response.render("UpdateMilestone", {milestone});
+        } else {
+            return response.send(401, "Milestone does not exist");
+        }
+    });
+
 })
 
-milestoneController.post('/Updatemilestone:id', ensureLoggedIn('/Login'), function (request, response) {
-    response.render("Homepage");
-});
+milestoneController.post("/Updatemilestone/:id", function (request, response) {
+    // Check if the user is logged in
+    if (request.user == null) { response.redirect('/'); return; }
+
+    // Get the project id
+    const milestoneId = request.params.id;
+    if (milestoneId == null) 
+        return response.send(401, "milestone ID is not set!");
+
+    const milestoneName = request.body.milestoneName;
+    const description = request.body.description;
+    const dueDate = request.body.dueDate;
+    const completionDate = request.body.completionDate;
+    const projectid = request.body.projectid;
+
+    milestoneDao().lookupId(milestoneId, (err, milestone) => {
+        if (milestone) {
+            // Update the project
+            milestoneDao().updateMilestone(milestoneId, milestoneName, description, dueDate, completionDate, projectid,
+                (noReplaced) => {
+                    return response.send(401, 
+                        "Successfully changed milestone! Please return to the <a href=\"/\">Home Page</a>.");
+                },
+                (err) => {
+                    console.error("Error during database update! ", err);
+                    return response.send(500, "Error during database update!");
+                });
+            return;
+        } else {
+            return response.send(401, "milestone does not exist");
+        }
+    });
+})
 
 //Remove milestone
 milestoneController.get('/Removemilestone/:id', function (request, response) {

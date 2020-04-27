@@ -70,6 +70,52 @@ class TaskDAO {
             /*callback(err, numRemoved);*/
         });
     }
+
+    updateTask(id, taskName, description, dueDate, completionDate, milestoneid,
+        success = (noReplaced) => { }, error = (err) => { }) 
+    {
+        let instance = this;
+        instance.lookupId(id, (err, task) => {
+            if (err) { if (error !== null) error(err); return; }
+    
+            // Check if project is not found
+            if (task == null || task == undefined)
+                return error != null ? error({ message: "task not found" }) : null;
+    
+            // Update the fields        
+            instance.db.update({'_id':id}, {
+                    $set: {
+                        taskName,
+                        description,
+                        dueDate,
+                        completionDate ,
+                        milestoneid
+                    }
+                }, {}, (err, noReplaced) => {
+                    if (err) {
+                        if (error !== null)
+                            error(err);
+                        return;
+                    }
+    
+                    success(noReplaced);
+                });
+        });
+        return;
+    }
+    
+        lookupId(id, cb) {
+            this.db.find({ '_id': id }, function (err, entries) {
+                if (err) {
+                    return cb(err, null);
+                } else {
+                    if (entries.length == 0)
+                        return cb(null, null);
+    
+                    return cb(null, entries[0]);
+                }
+            });
+        }
 }
 
 
