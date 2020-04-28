@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>View Project</title>
+</head>
+<body class="container">
+    {{title}}
+
+    <h2>View Project: {{project.projectTitle}}</h2>
+    <small>{{project._id}}</small>
+
+    <div style="border: solid 1px #000000">
+    
+        <a href="/AddMilestone/{{project._id}}"> Create Milestone </a> <br>
+
+        {{#listmilestones}}
+        <div class="panel-heading">
+            <div style="border: solid 1px #000000">
+                Milestone <br>
+                id: {{_id}} <br>
+                Title: {{milestoneName}} <br>
+                Description: {{description}} <br>
+                dueDate: {{dueDate}} <br>
+                dueCompletion: {{completionDate}} <br>
+                projectid: {{projectid}} <br>
+            </div>
+            <a href="/AddTask/{{_id}}"> Create Task </a>|<a href="/Updatemilestone/{{_id}}"> Update Milestone </a>|<a href="/Removemilestone/{{_id}}"> Remove Milestone </a> <br>
+        </div>
+        <br>
+        {{/listmilestones}}
+
+        <br>
+
+        {{#listtasks}}
+        <div class="panel-heading">
+            <div style="border: solid 1px #000000">
+                Task <br>
+                id: {{_id}} <br>
+                Taskname: {{taskName}} <br>
+                Description: {{description}} <br>
+                dueDate: {{dueDate}} <br>
+                completionDate: {{completionDate}} <br>
+                milestoneid: {{milestoneid}} <br>
+            </div>
+            <a href="/Updatetask/{{_id}}"> Update task </a>|<a href="/Removetask/{{_id}}"> Remove task </a>
+        </div>
+        <br>
+        {{/listtasks}}
+
+    </div>
+
+
+<!--     <form id="updateProjectForm" method="POST" action="/UpdateProject/{{project._id}}">
+        <div class="form-group">
+            <label for="projectTitle">Please enter a new or current project Title: </label>
+            <input type="text" class="form-control" id="projectTitle" name="projectTitle" placeholder="Enter new or current project Title" 
+                required value="{{project.projectTitle}}">
+        </div>
+
+        <div class="form-group">
+            <label for="modulename">Please enter a new or current project module: </label>
+            <input type="text" class="form-control" id="modulename" name="modulename" placeholder="Enter module name"
+                required value="{{project.modulename}}">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Please enter a new or current project description: </label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" 
+                required value="{{project.description}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="isPrivate">Is the project private or public? </label>
+            {{#project.isPrivate}}
+                <input type="checkbox" class="form-control" id="isPrivate" name="isPrivate" value="checked" checked>
+            {{/project.isPrivate}}
+            {{^project.isPrivate}}
+                <input type="checkbox" class="form-control" id="isPrivate" name="isPrivate">
+            {{/project.isPrivate}}
+        </div>
+
+        <div class="form-group">
+            <label for="dueDate">Please enter a new or current project due date: </label>
+            <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Enter completion date" minlength="8"
+                required value="{{project.dueDate}}">
+        </div>
+        <div class="form-group">
+            <label for="completionDate">Please enter a new or current project completion date: </label>
+            <input type="date" class="form-control" id="completionDate" name="completionDate" placeholder="Enter completion date" minlength="8"
+                required value="{{project.completionDate}}">
+        </div>
+    </form>
+
+    <div class="text-right" style="margin-bottom: 1em;">
+        {{^user}}
+            <span>
+                <button type="submit" form="updateProjectForm">Update</button>
+            </span>
+        {{/user}}
+    </div> -->
+</body>
+</html>

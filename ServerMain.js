@@ -10,6 +10,8 @@ let auth = require('./auth/auth');
 // Controller imports
 let projectController = require('./Controller/projectRoutes.js');
 let userController = require('./Controller/userRoutes.js');
+let taskController = require('./Controller/taskRoutes.js');
+let milestoneController = require('./Controller/milestoneRoutes.js');
 
 
 // Express definitions
@@ -35,6 +37,8 @@ auth.init(app);
 // Use controllers (defined above) for handling requests
 app.use('/', projectController);
 app.use('/', userController);
+app.use('/', taskController);
+app.use('/', milestoneController);
 
 // Home landing page
 app.get("/", function(req,res){
@@ -92,28 +96,6 @@ app.post("/Login", function(req,res){
         console.log('Error: ')
         console.log(JSON.stringify(err))
     });  
-});
-
-// Remove User view
-app.get("/RemoveUser", function(req,res) {
-    // Redirect if not logged in
-    if (req.user == null) { 
-        res.redirect('/'); 
-        return; 
-    }
-
-    res.render("RemoveUser");
-});
-
-// Logout View
-app.get("/Logout", function(req,res){
-    // Redirect if not logged in
-    if (req.user == null) { 
-        res.redirect('/'); 
-        return; 
-    }
-
-    res.render("Logout");
 });
 
 // Error view
