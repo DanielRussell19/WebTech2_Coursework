@@ -2,4 +2,4 @@
 
 
 
-Team Coursework submission by Carlos Lea, Daniel Russell, Ewan Beaton & Scott Gallacher
+Team Coursework submission by Carlos Leal, Daniel Russell, Ewan Beaton & Scott Gallacher
