@@ -34,43 +34,49 @@
         </a>
     </div>
 
+    <div class="text-right">
+        <a href="/ShareProject" class="btn btn-primary">
+            View Shared Project
+        </a>
+    </div>
+
     {{#entries}}
+    <div style = "border: solid 1px #000000">
         <div class="panel panel-default" data-id="{{id}}">
             <div class="panel-heading">
                 <div>
-                    {{projectTitle}}
+                    Projecttitle: {{projectTitle}}
                 </div>
             </div>
 
             <div class="panel-body">
-                {{modulename}}
+                Modulename: {{modulename}}
             </div>
 
             <div class="panel-body">
-                {{description}}
+                Description: {{description}}
             </div>
             <div class="panel-heading">
                 <div>
-                    {{isPrivate}}
+                Is private: {{isPrivate}}
                 </div>
             </div>
 
             <div class="panel-body">
-                {{shareLink}}
+                ShareLink: {{shareLink}}
             </div>
 
             <div class="panel-body">
-                {{dueDate}}
+                Due date: {{dueDate}}
             </div>
 
             <div class="panel-body">
-                {{completionDate}}
+                Complete date: {{completionDate}}
             </div>
 
-            <a href="/ViewProject/{{_id}}"> View Project </a> <br>
-            <a href="/UpdateProject/{{_id}}"> Update Project </a> <br>
-            <a href="/RemoveProject/{{_id}}"> Remove Project </a> <br>
+            <a href="/ViewProject/{{_id}}"> View Project </a> | <a href="/UpdateProject/{{_id}}"> Update Project </a> |  <a href="/RemoveProject/{{_id}}"> Remove Project </a>
         </div>
+    </div>
         <br><br>
     {{/entries}}
 </body>
