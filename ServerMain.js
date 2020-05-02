@@ -12,6 +12,7 @@ let projectController = require('./Controller/projectRoutes.js');
 let userController = require('./Controller/userRoutes.js');
 let taskController = require('./Controller/taskRoutes.js');
 let milestoneController = require('./Controller/milestoneRoutes.js');
+let shareController = require('./Controller/shareRoutes.js');
 
 
 // Express definitions
@@ -39,6 +40,7 @@ app.use('/', projectController);
 app.use('/', userController);
 app.use('/', taskController);
 app.use('/', milestoneController);
+app.use('/', shareController);
 
 // Home landing page
 app.get("/", function(req,res){

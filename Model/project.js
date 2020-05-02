@@ -68,6 +68,19 @@ class ProjectDAO {
         });
     }
 
+    lookupbyShareLink(linkid, cb) {
+        this.db.find({ 'shareLink': linkid }, function (err, entries) {
+            if (err) {
+                return cb(err, null);
+            } else {
+                if (entries.length == 0)
+                    return cb(null, null);
+
+                return cb(null, entries[0]);
+            }
+        });
+    }
+
     lookup(oldprojectTitle, cb) {
         this.db.find({ 'projectTitle': oldprojectTitle }, function (err, entries) {
             if (err) {
