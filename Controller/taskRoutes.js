@@ -49,28 +49,28 @@ taskController.get('/Updatetask/:id', function (request, response) {
 
 })
 
-taskController.post("/Updatemilestone/:id", function (request, response) {
+taskController.post("/UpdateTask/:id", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
     // Get the project id
-    const milestoneId = request.params.id;
-    if (milestoneId == null) 
-        return response.send(401, "milestone ID is not set!");
+    const taskId = request.params.id;
+    if (taskId == null) 
+        return response.send(401, "task ID is not set!");
 
-    const milestoneName = request.body.milestoneName;
-    const description = request.body.description;
-    const dueDate = request.body.dueDate;
-    const completionDate = request.body.completionDate;
-    const projectid = request.body.projectid;
+    const taskName = request.body.TaskName;
+    const description = request.body.TaskDesc;
+    const dueDate = request.body.TaskDue;
+    const completionDate = request.body.TaskComplete;
+    const milestoneid = request.body.milestoneId;
 
-    milestoneDao().lookupId(milestoneId, (err, milestone) => {
-        if (milestone) {
+    taskDao().lookupId(taskId, (err, task) => {
+        if (task) {
             // Update the project
-            milestoneDao().updateMilestone(milestoneId, milestoneName, description, dueDate, completionDate, projectid,
+            taskDao().updateTask(taskId, taskName, description, dueDate, completionDate, milestoneid,
                 (noReplaced) => {
                     return response.send(401, 
-                        "Successfully changed milestone! Please return to the <a href=\"/\">Home Page</a>.");
+                        "Successfully changed task! Please return to the <a href=\"/\">Home Page</a>.");
                 },
                 (err) => {
                     console.error("Error during database update! ", err);
@@ -78,7 +78,7 @@ taskController.post("/Updatemilestone/:id", function (request, response) {
                 });
             return;
         } else {
-            return response.send(401, "milestone does not exist");
+            return response.send(401, "task does not exist");
         }
     });
 })
