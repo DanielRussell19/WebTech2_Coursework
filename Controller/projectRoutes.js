@@ -81,6 +81,11 @@ projectController.post('/AddProject', ensureLoggedIn('/Login'), function (reques
         return;
     }
 
+    if(request.body.completionDate < request.body.dueDate){
+        response.status(400).send("Project can not be complete before due.");
+        return;
+    }
+
     projectDao().create(request.body.projectTitle, request.body.modulename, request.body.description,
         request.body.isPrivate !== undefined, request.body.dueDate, request.body.completionDate);
     response.redirect("/HomePage");
