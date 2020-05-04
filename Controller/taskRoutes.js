@@ -62,7 +62,7 @@ taskController.post("/UpdateTask/:id", function (request, response) {
     const description = request.body.TaskDesc;
     const dueDate = request.body.TaskDue;
     const completionDate = request.body.TaskComplete;
-    const milestoneid = request.body.milestoneId;
+    const milestoneid = request.body.milestoneid;
 
     taskDao().lookupId(taskId, (err, task) => {
         if (task) {
