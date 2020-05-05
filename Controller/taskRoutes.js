@@ -53,6 +53,11 @@ taskController.post("/UpdateTask/:id", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
+    if(request.body.TaskComplete < request.body.TaskDue){
+        response.status(400).send("Task can not be complete before due.");
+        return;
+    }
+
     // Get the project id
     const taskId = request.params.id;
     if (taskId == null) 

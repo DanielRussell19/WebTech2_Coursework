@@ -52,6 +52,11 @@ milestoneController.post("/Updatemilestone/:id", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
+    if(request.body.completionDate < request.body.dueDate){
+        response.status(400).send("milestone can not be complete before due.");
+        return;
+    }
+
     // Get the project id
     const milestoneId = request.params.id;
     if (milestoneId == null) 

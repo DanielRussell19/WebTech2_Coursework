@@ -138,6 +138,11 @@ projectController.post("/UpdateProject/:id", function (request, response) {
     // Check if the user is logged in
     if (request.user == null) { response.redirect('/'); return; }
 
+    if(request.body.completionDate < request.body.dueDate){
+        response.status(400).send("Project can not be complete before due.");
+        return;
+    }
+
     // Get the project id
     const projectId = request.params.id;
     if (projectId == null) 
